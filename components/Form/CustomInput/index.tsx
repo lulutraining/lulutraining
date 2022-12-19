@@ -30,7 +30,7 @@ export const CustomInput = (props: CustomInputProps) => {
           error={errorMsg ? true : false}
           helperText={errorMsg}
           autoComplete="off"
-          value={value}
+          defaultValue={value}
         />
         {label === 'Password' && (
           <PasswordVisibility visible={passwordVisible} setVisible={setPasswordVisible} />
