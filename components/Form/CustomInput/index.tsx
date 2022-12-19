@@ -38,6 +38,7 @@ export const CustomInput = (props: CustomInputProps) => {
             placeholder="비밀번호를 입력해 주세요"
             error={errorMsg ? true : false}
             helperText={errorMsg}
+            autoComplete="off"
           />
           <PasswordVisibility visible={passwordVisible} setVisible={setPasswordVisible} />
         </>
