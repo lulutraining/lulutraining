@@ -1,6 +1,7 @@
-export interface RequestAuth {
-  email: string;
-  password: string;
+export interface RegistInput {
+  email?: string;
+  password?: string;
+  nickname?: string;
 }
 
 export interface UserProfile {
