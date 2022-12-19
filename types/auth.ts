@@ -1,7 +1,10 @@
 export interface RegistInput {
   email?: string;
   password?: string;
-  nickname?: string;
+  displayName?: string;
+  age?: string;
+  height?: string;
+  weight?: string;
 }
 
 export interface UserProfile {

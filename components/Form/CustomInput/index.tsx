@@ -4,41 +4,28 @@ import { TextField } from '@mui/material';
 import { useState } from 'react';
 import { UseFormRegisterReturn } from 'react-hook-form';
 
-type InputLabel = 'Email' | 'Password' | 'Nickname';
+type InputLabel = 'Email' | 'Password' | 'Nickname' | '나이(만)' | '신장(cm)' | '체중(kg)';
 
 interface CustomInputProps {
   label: InputLabel;
   register: UseFormRegisterReturn;
+  autoFocus: boolean;
+  type: 'text' | 'number' | 'email' | 'password';
   errorMsg?: string;
-  inputType?: string;
-  autoFocus?: boolean;
   value?: string;
 }
 
-export const emailValidation = {
-  required: true,
-  pattern: {
-    value: /[\w-_.]+@[\w]+\.[\w.]+/,
-    message: '이메일 형식에 맞게 입력해 주세요',
-  },
-};
-
-export const passwordValidation = {
-  required: true,
-  minLength: {
-    value: 6,
-    message: '비밀번호는 6자 이상 입력해 주세요',
-  },
-};
-
-const placeholderTxt = {
-  Email: '이메일 형식의 아이디를 입력해 주세요',
-  Nickname: '닉네임을 입력해주세요',
-};
-
 export const CustomInput = (props: CustomInputProps) => {
-  const { label, value, register, autoFocus, inputType, errorMsg } = props;
+  const { label, value, register, autoFocus, type, errorMsg } = props;
   const [passwordVisible, setPasswordVisible] = useState(false);
+
+  const placeholderTxt = {
+    Email: '이메일 형식의 아이디를 입력해 주세요',
+    Nickname: '닉네임을 입력해주세요',
+    '나이(만)': '만 나이를 입력해주세요 ',
+    '신장(cm)': '키를 입력해주세요',
+    '체중(kg)': '체중을 입력해주세요',
+  };
 
   return (
     <Container>
@@ -58,8 +45,8 @@ export const CustomInput = (props: CustomInputProps) => {
         <TextField
           {...register}
           defaultValue={value}
-          autoFocus={autoFocus || false}
-          type={inputType || 'text'}
+          autoFocus={autoFocus}
+          type={type}
           placeholder={placeholderTxt[label]}
           error={errorMsg ? true : false}
           helperText={errorMsg}
