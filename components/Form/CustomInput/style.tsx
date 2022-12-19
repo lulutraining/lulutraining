@@ -12,9 +12,7 @@ export const Container = styled.div`
   }
 
   input {
-    background: #e6e6e6;
     border-radius: 5px;
-    border: 0;
     padding: 15px;
   }
 
