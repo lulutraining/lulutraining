@@ -2,7 +2,7 @@ import { Container } from './style';
 
 interface PrevNextButtonProps {
   onClickNext?: () => void;
-  onClickPrev?: () => void;
+  onClickPrev: () => void;
 }
 
 export const PrevNextButton = (props: PrevNextButtonProps) => {
