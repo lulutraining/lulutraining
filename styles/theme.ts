@@ -3,6 +3,7 @@ import { createTheme } from '@mui/material';
 export const theme = createTheme({
   colors: {
     darkblue: '#060433',
+    pastelblue: '#2B3467',
     lightblue: '#2F3980',
   },
   mq: {
