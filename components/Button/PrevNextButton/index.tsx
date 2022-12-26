@@ -1,21 +1,23 @@
+import { Button } from '@mui/material';
 import { Container } from './style';
 
 interface PrevNextButtonProps {
   onClickNext?: () => void;
   onClickPrev: () => void;
+  nextButtonType: 'button' | 'submit';
 }
 
 export const PrevNextButton = (props: PrevNextButtonProps) => {
-  const { onClickPrev, onClickNext } = props;
+  const { onClickPrev, onClickNext, nextButtonType } = props;
 
   return (
     <Container>
-      <button type="button" onClick={onClickPrev} className="button-prev">
+      <Button type="button" onClick={onClickPrev} className="button-prev">
         이전
-      </button>
-      <button type="submit" onClick={onClickNext} className="button-next">
+      </Button>
+      <Button type={nextButtonType} onClick={onClickNext} className="button-next">
         다음
-      </button>
+      </Button>
     </Container>
   );
 };
