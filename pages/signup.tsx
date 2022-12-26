@@ -1,9 +1,9 @@
-import Image from 'next/image';
 import { CustomInput } from 'components';
-import { useForm } from 'react-hook-form';
 import { RequestAuth } from 'types/auth';
-import { Button } from '@mui/material';
 import { Container } from 'styles/signup.style';
+import { useForm } from 'react-hook-form';
+import { Button } from '@mui/material';
+import Image from 'next/image';
 
 const Signup = () => {
   const {
@@ -15,10 +15,10 @@ const Signup = () => {
 
   return (
     <Container>
-      <header>
+      <div className="signup__title">
         <Image src="/images/logo.svg" alt="oz-logo" width={144} height={144} priority />
         <h1>회원가입</h1>
-      </header>
+      </div>
       <form onSubmit={handleSubmit(onVailSignup)}>
         <CustomInput
           label="Nickname"
@@ -44,7 +44,7 @@ const Signup = () => {
             },
           })}
           autoFocus
-          type="text"
+          type="email"
           placeholder="이메일 형식의 아이디를 입력해주세요"
           errorMsg={errors.displayName ? '' : errors.email?.message}
         />

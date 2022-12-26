@@ -6,18 +6,25 @@ export const Container = styled.section`
   align-items: center;
   justify-items: center;
   padding-bottom: 30px;
-  h1 {
-    margin: 34px 0 50px 0;
-    font-size: 30px;
-    color: ${(props) => props.theme.colors.pastelblue};
-    text-align: center;
+
+  .signup__title {
+    margin-top: 54px;
+
+    h1 {
+      margin: 34px 0 50px 0;
+      font-size: 30px;
+      color: ${(props) => props.theme.colors.pastelblue};
+      text-align: center;
+    }
   }
 
   form {
     width: 100%;
+
     input {
       border: 1px solid ${(props) => props.theme.colors.darkblue};
     }
+
     .signup__button-signup {
       padding: 0;
       margin: 0 auto;
