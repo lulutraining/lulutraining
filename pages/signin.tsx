@@ -1,4 +1,4 @@
-import { AuthError, AuthInput, Characters } from 'components';
+import { AuthError, CustomInput, Characters } from 'components';
 import { authAPI } from 'apis/auth';
 import { RequestAuth } from 'types/auth';
 import { authState } from 'store/atoms';
@@ -58,8 +58,34 @@ const Signin = () => {
         <Characters />
       </div>
       <form onSubmit={handleSubmit(onValidSignin)}>
-        <AuthInput label="Email" register={register} errorMsg={errors.email?.message} />
-        <AuthInput label="Password" register={register} errorMsg={errors.password?.message} />
+        <CustomInput
+          label="Email"
+          register={register('email', {
+            required: '이메일 형식에 맞게 입력해 주세요',
+            pattern: {
+              value: /[\w-_.]+@[\w]+\.[\w.]+/,
+              message: '이메일 형식에 맞게 입력해 주세요',
+            },
+          })}
+          type="text"
+          errorMsg={errors.email?.message}
+          placeholder="이메일 형식의 아이디를 입력해주세요"
+          autoFocus={true}
+        />
+        <CustomInput
+          label="Password"
+          register={register('password', {
+            required: '비밀번호는 6자 이상 입력해주세요',
+            minLength: {
+              value: 6,
+              message: '비밀번호는 6자 이상 입력해주세요',
+            },
+          })}
+          type="password"
+          errorMsg={errors.password?.message}
+          placeholder="비밀번호를 입력해주세요"
+          autoFocus={false}
+        />
         <AuthError errorCode={signinError} />
         <button className="signin-btn">로그인</button>
       </form>
