@@ -11,13 +11,16 @@ const Signup = () => {
     handleSubmit,
     formState: { errors },
   } = useForm<RequestAuth>();
+
   const onVailSignup = async (valid: RequestAuth) => {};
 
   return (
     <Container>
       <div className="signup__title">
-        <Image src="/images/logo.svg" alt="oz-logo" width={144} height={144} priority />
-        <h1>회원가입</h1>
+        <h1>
+          <Image src="/images/logo.svg" alt="oz-logo" width={144} height={144} priority />
+        </h1>
+        <p>회원가입</p>
       </div>
       <form onSubmit={handleSubmit(onVailSignup)}>
         <CustomInput
@@ -29,7 +32,7 @@ const Signup = () => {
               message: '닉네임은 2자 이상 입력해주세요',
             },
           })}
-          autoFocus
+          autoFocus={true}
           type="text"
           placeholder="닉네임을 입력해주세요"
           errorMsg={errors.displayName?.message}
@@ -43,8 +46,8 @@ const Signup = () => {
               message: '이메일 형식에 맞게 입력해 주세요',
             },
           })}
-          autoFocus
-          type="email"
+          autoFocus={false}
+          type="text"
           placeholder="이메일 형식의 아이디를 입력해주세요"
           errorMsg={errors.displayName ? '' : errors.email?.message}
         />
@@ -57,7 +60,7 @@ const Signup = () => {
               message: '비밀번호는 6자 이상 입력해주세요',
             },
           })}
-          autoFocus
+          autoFocus={false}
           type="password"
           placeholder="비밀번호를 입력해주세요"
           errorMsg={errors.email ? '' : errors.password?.message}

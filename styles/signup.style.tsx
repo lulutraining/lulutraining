@@ -10,7 +10,7 @@ export const Container = styled.section`
   .signup__title {
     margin-top: 54px;
 
-    h1 {
+    p {
       margin: 34px 0 50px 0;
       font-size: 30px;
       color: ${(props) => props.theme.colors.pastelblue};
@@ -20,6 +20,7 @@ export const Container = styled.section`
 
   form {
     width: 100%;
+    padding-bottom: 80px;
 
     input {
       border: 1px solid ${(props) => props.theme.colors.darkblue};
@@ -35,7 +36,7 @@ export const Container = styled.section`
       border-radius: 5px;
       font-size: 18px;
       color: #fff;
-      margin-top: 50px;
+      margin-top: 80px;
       background: ${(props) => props.theme.colors.pastelblue};
     }
   }
