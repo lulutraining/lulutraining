@@ -4,6 +4,7 @@ declare module '@emotion/react' {
   export interface Theme {
     colors: {
       darkblue: string;
+      pastelblue: string;
       lightblue: string;
     };
     mq: {
@@ -18,6 +19,7 @@ declare module '@mui/material/styles' {
   interface Theme {
     colors: {
       darkblue: string;
+      pastelblue: string;
       lightblue: string;
     };
     mq: {
@@ -29,6 +31,7 @@ declare module '@mui/material/styles' {
   interface ThemeOptions {
     colors?: {
       darkblue?: string;
+      pastelblue?: string;
       lightblue?: string;
     };
     mq?: {
