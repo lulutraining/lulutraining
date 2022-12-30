@@ -21,21 +21,19 @@ export const CustomInput = (props: CustomInputProps) => {
   return (
     <Container>
       <label>{label}</label>
-      <>
-        <TextField
-          {...register}
-          type={type === 'password' ? (!passwordVisible ? 'password' : 'text') : type}
-          placeholder={placeholder}
-          autoFocus={autoFocus}
-          error={errorMsg ? true : false}
-          helperText={errorMsg}
-          autoComplete="off"
-          defaultValue={value}
-        />
-        {label === 'Password' && (
-          <PasswordVisibility visible={passwordVisible} setVisible={setPasswordVisible} />
-        )}
-      </>
+      <TextField
+        {...register}
+        type={type === 'password' ? (!passwordVisible ? 'password' : 'text') : type}
+        placeholder={placeholder}
+        autoFocus={autoFocus}
+        error={errorMsg ? true : false}
+        helperText={errorMsg}
+        autoComplete="off"
+        defaultValue={value}
+      />
+      {label === 'Password' && (
+        <PasswordVisibility visible={passwordVisible} setVisible={setPasswordVisible} />
+      )}
     </Container>
   );
 };
