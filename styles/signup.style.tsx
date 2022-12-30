@@ -1,22 +1,12 @@
 import styled from '@emotion/styled';
 
-export const Container = styled.section`
+export const Container = styled.section<{ isloading: boolean }>`
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-items: center;
   padding-bottom: 30px;
-
-  .signup__title {
-    margin-top: 54px;
-
-    p {
-      margin: 34px 0 50px 0;
-      font-size: 30px;
-      color: ${(props) => props.theme.colors.pastelblue};
-      text-align: center;
-    }
-  }
+  position: relative;
 
   form {
     width: 100%;
