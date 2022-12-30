@@ -45,7 +45,7 @@ const Signup = () => {
   };
 
   return (
-    <Container isloading={isLoading}>
+    <Container>
       {isLoading ? (
         <Loader />
       ) : (
