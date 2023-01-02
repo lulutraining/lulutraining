@@ -1,4 +1,4 @@
-import { AuthError, CustomInput, Characters } from 'components';
+import { AuthError, CustomInput } from 'components';
 import { authAPI } from 'apis/auth';
 import { RequestAuth } from 'types/auth';
 import { authState } from 'store/atoms';
@@ -55,7 +55,6 @@ const Signin = () => {
           <br />
           트레이닝 클럽
         </h2>
-        <Characters />
       </div>
       <form onSubmit={handleSubmit(onValidSignin)}>
         <CustomInput
