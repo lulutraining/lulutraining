@@ -8,7 +8,7 @@ import { useForm } from 'react-hook-form';
 import { Button } from '@mui/material';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { FirebaseError } from 'firebase/app';
 import { useSetRecoilState } from 'recoil';
 
