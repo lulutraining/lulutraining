@@ -1,4 +1,5 @@
 import { UserProfile } from 'types/auth';
+import { localStorageEffect } from './atomEffect';
 import { atom } from 'recoil';
 
 export const authState = atom<UserProfile>({
@@ -6,4 +7,5 @@ export const authState = atom<UserProfile>({
   default: {
     displayName: '',
   },
+  effects: [localStorageEffect('oz-user-profile')],
 });
