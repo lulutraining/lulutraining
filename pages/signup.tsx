@@ -35,8 +35,7 @@ const Signup = () => {
       });
       router.push('/signup/body-check');
       localStorage.setItem('oz-user', user.uid);
-      localStorage.setItem('oz-user-profile', JSON.stringify({ diplayName: user.displayName }));
-      setUserProfile({ displayName: user.displayName as string });
+      setUserProfile({ displayName });
     } catch (error) {
       if (error instanceof FirebaseError) {
         setSignupError(`${error.code}`);
