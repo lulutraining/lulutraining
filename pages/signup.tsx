@@ -1,42 +1,44 @@
-import { AuthError, CustomInput, Loader, SignupHeader } from 'components';
+import { AuthError, CustomInput, Loader } from 'components';
 import { authAPI } from 'apis/auth';
-import { RequestAuth } from 'types/auth';
+import { RequestSignup, UserProfile } from 'types/auth';
+import { authState } from 'store/atoms';
+import logoImage from '/public/images/logo.png';
 import { Container } from 'styles/signup.style';
 import { useForm } from 'react-hook-form';
 import { Button } from '@mui/material';
+import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { FirebaseError } from 'firebase/app';
-import { getAuth, User } from 'firebase/auth';
+import { useSetRecoilState } from 'recoil';
 
 const Signup = () => {
   const router = useRouter();
   const [signupError, setSignupError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const setUserProfile = useSetRecoilState<UserProfile>(authState);
   const {
     register,
     handleSubmit,
     setFocus,
     formState: { errors },
-  } = useForm<RequestAuth>();
+  } = useForm<RequestSignup>();
 
-  const onVailSignup = async ({ email, password, displayName }: RequestAuth) => {
+  const onVailSignup = async ({ email, password, displayName }: RequestSignup) => {
     setSignupError('');
-
     try {
-      await authAPI.signup({ email, password });
+      const { user } = await authAPI.signup({ email, password });
       setIsLoading(true);
-
       await authAPI.updateProfile({
-        user: getAuth().currentUser as User,
-        displayName: displayName as string,
+        user: user,
+        displayName: displayName,
       });
-
-      await router.push('/signup/body-check');
+      router.push('/signup/body-check');
+      localStorage.setItem('oz-user', user.uid);
+      setUserProfile({ displayName });
     } catch (error) {
       if (error instanceof FirebaseError) {
         setSignupError(`${error.code}`);
-
         if (error.code === 'auth/email-already-in-use') {
           setFocus('email', { shouldSelect: true });
         }
@@ -50,7 +52,12 @@ const Signup = () => {
         <Loader />
       ) : (
         <>
-          <SignupHeader title="회원가입" />
+          <div className="signup__title">
+            <h1>
+              <Image src={logoImage} alt="oz-logo" priority />
+            </h1>
+            <p>회원가입</p>
+          </div>
           <form onSubmit={handleSubmit(onVailSignup)}>
             <CustomInput
               label="Nickname"

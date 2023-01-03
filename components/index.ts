@@ -4,4 +4,3 @@ export * from './Icons';
 export * from './Errors';
 export * from './Button';
 export * from './Loader';
-export * from './Header';

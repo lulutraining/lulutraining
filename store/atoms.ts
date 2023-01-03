@@ -4,6 +4,6 @@ import { atom } from 'recoil';
 export const authState = atom<UserProfile>({
   key: 'auth/profile',
   default: {
-    userName: '',
+    displayName: '',
   },
 });
