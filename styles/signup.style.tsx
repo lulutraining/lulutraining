@@ -6,9 +6,15 @@ export const Container = styled.section`
   align-items: center;
   justify-items: center;
   padding-bottom: 30px;
+  position: relative;
 
   .signup__title {
     margin-top: 54px;
+
+    img {
+      width: 144px;
+      height: 144px;
+    }
 
     p {
       margin: 34px 0 50px 0;

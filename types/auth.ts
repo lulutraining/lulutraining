@@ -1,9 +1,18 @@
+import { User } from 'firebase/auth';
+
 export interface RequestAuth {
   email: string;
   password: string;
-  displayName?: string;
+}
+
+export interface RequestSignup extends RequestAuth {
+  displayName: string;
 }
 
 export interface UserProfile {
-  userName: string;
+  displayName: string;
+}
+
+export interface UpdateUserProfile extends UserProfile {
+  user: User;
 }
