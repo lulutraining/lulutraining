@@ -8,7 +8,7 @@ import { useForm } from 'react-hook-form';
 import { Button } from '@mui/material';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { FirebaseError } from 'firebase/app';
 import { useSetRecoilState } from 'recoil';
 
@@ -35,7 +35,9 @@ const Signup = () => {
       });
       router.push('/signup/body-check');
       localStorage.setItem('oz-user', user.uid);
-      setUserProfile({ displayName });
+      setUserProfile((prevProfile) => {
+        return { ...prevProfile, displayName: user.displayName || '' };
+      });
     } catch (error) {
       if (error instanceof FirebaseError) {
         setSignupError(`${error.code}`);
@@ -45,6 +47,13 @@ const Signup = () => {
       }
     }
   };
+
+  useEffect(() => {
+    const token = localStorage.getItem('oz-user');
+    if (token) {
+      router.push('/');
+    }
+  }, []);
 
   return (
     <Container>
