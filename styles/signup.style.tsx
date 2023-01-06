@@ -28,10 +28,6 @@ export const Container = styled.section`
     width: 100%;
     padding-bottom: 80px;
 
-    input {
-      border: 1px solid ${(props) => props.theme.colors.darkblue};
-    }
-
     .signup__button-signup {
       padding: 0;
       margin: 0 auto;
