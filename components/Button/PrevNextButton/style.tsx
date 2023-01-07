@@ -6,7 +6,7 @@ export const Container = styled.div`
   margin-top: 114px;
   width: 100%;
   button {
-    width: 149px;
+    flex-grow: 1;
     height: 51px;
     padding: 0;
     border: 1px solid ${(props) => props.theme.colors.darkblue};
@@ -16,6 +16,7 @@ export const Container = styled.div`
 
     &.button-prev {
       color: ${(props) => props.theme.colors.darkblue};
+      margin-right: 20px;
     }
     &.button-next {
       color: #fff;
