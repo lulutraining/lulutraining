@@ -37,7 +37,6 @@ const ActiveCheck = () => {
     setActPage((prev) => prev + 1);
     setAnswer(0);
   };
-  console.log(actScore);
 
   useEffect(() => {
     setProgress((100 / activeQuestion.length) * (actPage + 1));
