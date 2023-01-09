@@ -14,6 +14,7 @@ export const Container = styled.div`
   input {
     border-radius: 5px;
     padding: 15px;
+    border: 1px solid ${(props) => props.theme.colors.darkblue};
   }
 
   fieldset {
