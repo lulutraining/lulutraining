@@ -29,14 +29,13 @@ const Signin = () => {
       });
       localStorage.setItem('oz-user', data.user.uid);
       setProfile((prevProfile) => {
-        return { ...prevProfile, userName: data.user.displayName || '' };
+        return { ...prevProfile, displayName: data.user.displayName || '' };
       });
+      router.push('/');
     } catch (error) {
       if (error instanceof FirebaseError) {
         setSigninError(`${error.code}`);
       }
-    } finally {
-      router.push('/');
     }
   };
 
@@ -89,7 +88,9 @@ const Signin = () => {
         <AuthError errorCode={signinError} />
         <button className="signin-btn">로그인</button>
       </form>
-      <Button className="signup-btn">회원가입</Button>
+      <Button className="signup-btn" onClick={() => router.push('/signup')}>
+        회원가입
+      </Button>
     </Container>
   );
 };
