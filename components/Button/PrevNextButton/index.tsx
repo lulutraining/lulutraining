@@ -5,16 +5,19 @@ interface PrevNextButtonProps {
   onClickNext?: () => void;
   onClickPrev: () => void;
   nextButtonType: 'button' | 'submit';
+  prevBtnVisible: boolean;
 }
 
 export const PrevNextButton = (props: PrevNextButtonProps) => {
-  const { onClickPrev, onClickNext, nextButtonType } = props;
+  const { onClickPrev, onClickNext, nextButtonType, prevBtnVisible } = props;
 
   return (
     <Container>
-      <Button type="button" onClick={onClickPrev} className="button-prev">
-        이전
-      </Button>
+      {prevBtnVisible ? (
+        <Button type="button" onClick={onClickPrev} className="button-prev">
+          이전
+        </Button>
+      ) : null}
       <Button type={nextButtonType} onClick={onClickNext} className="button-next">
         다음
       </Button>
