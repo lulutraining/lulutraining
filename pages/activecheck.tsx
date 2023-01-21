@@ -1,46 +1,77 @@
 import { PrevNextButton } from 'components';
 import { Container, CustomLinearProgress, CustomToggleButtonGroup } from 'styles/activeCheck.style';
-import { activeQuestion, answerList } from 'consts';
 import { useEffect, useState } from 'react';
 import { Box, ToggleButton } from '@mui/material';
+import { db } from 'apis/database';
+import { FirebaseError } from 'firebase/app';
 
 interface scoreType {
-  page: number;
-  score: number;
+  [answer: string]: number;
 }
 
-const ActiveCheck = () => {
+interface actType {
+  question: string;
+  answer: answerList[];
+}
+
+interface answerList {
+  count: number;
+  text: string;
+}
+
+const ActiveCheck = ({ questionList }: { questionList: actType[] }) => {
   const [actPage, setActPage] = useState(0);
-  const [progress, setProgress] = useState(100 / activeQuestion.length);
+  const [progress, setProgress] = useState(100 / questionList.length);
   const [answer, setAnswer] = useState(0);
-  const [actScore, setActScore] = useState<scoreType[]>([]);
+  const [actScore, setActScore] = useState<scoreType>({
+    answer1: 0,
+    answer2: 0,
+    answer3: 0,
+    answer4: 0,
+    answer5: 0,
+  });
 
-  console.log(1);
-
-  const handleChange = (event: React.MouseEvent<HTMLElement>, answerCount: number) => {
+  const handleChangeAnswer = (event: React.MouseEvent<HTMLElement>, answerCount: number) => {
     setAnswer(answerCount);
+    setActScore({ ...actScore, [`answer${actPage + 1}`]: answerCount });
   };
 
   const onClickPrev = () => {
-    const filter = actScore.filter((x) => x.page !== actPage - 1);
-    const prevAnswer = actScore.filter((x) => x.page === actPage - 1)[0].score;
     setActPage((prev) => prev - 1);
-    setActScore(filter);
-    setAnswer(prevAnswer);
   };
 
-  const onClickNext = () => {
+  const onClickNext = async () => {
     if (answer === 0) {
       return alert('답을 선택해주세요.');
     }
-    setActScore([...actScore, { page: actPage, score: answer }]);
-    setActPage((prev) => prev + 1);
-    setAnswer(0);
+
+    if (actPage === questionList.length - 1) {
+      if (typeof window !== undefined) {
+        const user = localStorage.getItem('oz-user');
+        if (user) {
+          try {
+            await db.activeWrite({
+              collectionName: 'users',
+              documentName: user,
+              active: actScore,
+            });
+            return false;
+          } catch (error) {
+            if (error instanceof FirebaseError) {
+              console.log(error);
+            }
+          }
+        }
+      }
+    } else {
+      setActPage((prev) => prev + 1);
+    }
   };
 
   useEffect(() => {
-    setProgress((100 / activeQuestion.length) * (actPage + 1));
-  }, [actPage]);
+    setProgress((100 / questionList.length) * (actPage + 1));
+    setAnswer(actScore[`answer${actPage + 1}`]);
+  }, [actPage, actScore]);
 
   return (
     <Container>
@@ -50,7 +81,7 @@ const ActiveCheck = () => {
           <ul>
             <li>{actPage + 1}</li>
             <li>/</li>
-            <li>{activeQuestion.length}</li>
+            <li>{questionList.length}</li>
           </ul>
         </div>
         <Box sx={{ width: '100%' }}>
@@ -59,21 +90,22 @@ const ActiveCheck = () => {
       </div>
 
       <section>
-        <h2>Q. {activeQuestion[actPage].ques}</h2>
+        <h2>Q. {questionList[actPage].question}</h2>
         <CustomToggleButtonGroup
           orientation="vertical"
-          defaultValue={answer}
+          defaultValue={actScore[`answer${actPage + 1}`]}
           value={answer}
           exclusive
-          onChange={handleChange}
+          onChange={handleChangeAnswer}
         >
-          {activeQuestion[actPage].answer.map((list: answerList) => (
+          {questionList[actPage].answer.map((list: answerList) => (
             <ToggleButton className="answer-button" value={list.count} key={list.count}>
               {list.text}
             </ToggleButton>
           ))}
         </CustomToggleButtonGroup>
       </section>
+
       <PrevNextButton
         onClickPrev={onClickPrev}
         onClickNext={onClickNext}
@@ -83,5 +115,15 @@ const ActiveCheck = () => {
     </Container>
   );
 };
+
+export async function getStaticProps() {
+  const list = await db.read('activeQuestion');
+  let questionList;
+  list.forEach((doc) => {
+    questionList = doc.data()['list'];
+  });
+
+  return { props: { questionList } };
+}
 
 export default ActiveCheck;
