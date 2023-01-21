@@ -1,8 +1,11 @@
 import { Container } from './style';
 import { motion } from 'framer-motion';
 import { JellyTriangle } from '@uiball/loaders';
+import { useRouter } from 'next/router';
+import { useEffect } from 'react';
 
 export const Splash = () => {
+  const router = useRouter();
   const greeting = ['오즈의 세계에 오신 것을', '환영합니다'];
   const textVariants = {
     start: {
@@ -26,6 +29,11 @@ export const Splash = () => {
       },
     },
   };
+
+  useEffect(() => {
+    setTimeout(() => router.push('/'), 3300);
+  }, []);
+
   return (
     <Container>
       <motion.div initial="start" animate="visible" variants={loaderVariants}>
