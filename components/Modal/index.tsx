@@ -3,15 +3,12 @@ import logoImage from '/public/images/logo.png';
 import { Box, Button } from '@mui/material';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
 
-export const LoginModal = () => {
-  const [isLogin, setIsLogin] = useState(true);
-  useEffect(() => {
-    if (!localStorage.getItem('oz-user')) {
-      setIsLogin(false);
-    }
-  }, []);
+interface UnathorizedResultProps {
+  isLogin: boolean;
+}
+
+export const UnathorizedResult = ({ isLogin }: UnathorizedResultProps) => {
   return (
     <>
       {isLogin ? null : (
