@@ -97,7 +97,7 @@ const ActiveCheck = ({ questionList }: { questionList: QuestionListProps[] }) =>
           exclusive
           onChange={handleChangeAnswer}
         >
-          {questionList[actPage].answer.map((list: AnswerProps) => (
+          {questionList[actPage].answer.map((list) => (
             <ToggleButton className="answer-button" value={list.count} key={list.count}>
               {list.text}
             </ToggleButton>
