@@ -5,25 +5,25 @@ import { Box, ToggleButton } from '@mui/material';
 import { db } from 'apis/database';
 import { FirebaseError } from 'firebase/app';
 
-interface scoreType {
+interface UserAnswer {
   [answer: string]: number;
 }
 
-interface actType {
+interface QuestionListProps {
   question: string;
-  answer: answerList[];
+  answer: AnswerProps[];
 }
 
-interface answerList {
+interface AnswerProps {
   count: number;
   text: string;
 }
 
-const ActiveCheck = ({ questionList }: { questionList: actType[] }) => {
+const ActiveCheck = ({ questionList }: { questionList: QuestionListProps[] }) => {
   const [actPage, setActPage] = useState(0);
   const [progress, setProgress] = useState(100 / questionList.length);
   const [answer, setAnswer] = useState(0);
-  const [actScore, setActScore] = useState<scoreType>({
+  const [userAnswer, setUserAnswer] = useState<UserAnswer>({
     answer1: 0,
     answer2: 0,
     answer3: 0,
@@ -33,7 +33,7 @@ const ActiveCheck = ({ questionList }: { questionList: actType[] }) => {
 
   const handleChangeAnswer = (event: React.MouseEvent<HTMLElement>, answerCount: number) => {
     setAnswer(answerCount);
-    setActScore({ ...actScore, [`answer${actPage + 1}`]: answerCount });
+    setUserAnswer({ ...userAnswer, [`answer${actPage + 1}`]: answerCount });
   };
 
   const onClickPrev = () => {
@@ -53,9 +53,8 @@ const ActiveCheck = ({ questionList }: { questionList: actType[] }) => {
             await db.activeWrite({
               collectionName: 'users',
               documentName: user,
-              active: actScore,
+              active: userAnswer,
             });
-            return false;
           } catch (error) {
             if (error instanceof FirebaseError) {
               console.log(error);
@@ -70,8 +69,8 @@ const ActiveCheck = ({ questionList }: { questionList: actType[] }) => {
 
   useEffect(() => {
     setProgress((100 / questionList.length) * (actPage + 1));
-    setAnswer(actScore[`answer${actPage + 1}`]);
-  }, [actPage, actScore]);
+    setAnswer(userAnswer[`answer${actPage + 1}`]);
+  }, [actPage, userAnswer]);
 
   return (
     <Container>
@@ -93,12 +92,12 @@ const ActiveCheck = ({ questionList }: { questionList: actType[] }) => {
         <h2>Q. {questionList[actPage].question}</h2>
         <CustomToggleButtonGroup
           orientation="vertical"
-          defaultValue={actScore[`answer${actPage + 1}`]}
+          defaultValue={userAnswer[`answer${actPage + 1}`]}
           value={answer}
           exclusive
           onChange={handleChangeAnswer}
         >
-          {questionList[actPage].answer.map((list: answerList) => (
+          {questionList[actPage].answer.map((list: AnswerProps) => (
             <ToggleButton className="answer-button" value={list.count} key={list.count}>
               {list.text}
             </ToggleButton>

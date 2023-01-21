@@ -1,16 +1,4 @@
-import {
-  collection,
-  doc,
-  DocumentData,
-  DocumentReference,
-  DocumentSnapshot,
-  getDoc,
-  getDocs,
-  query,
-  QuerySnapshot,
-  setDoc,
-  where,
-} from 'firebase/firestore';
+import { collection, doc, DocumentData, getDocs, QuerySnapshot, setDoc } from 'firebase/firestore';
 import { firestore } from 'services/firebase';
 
 interface DocumentOption {
