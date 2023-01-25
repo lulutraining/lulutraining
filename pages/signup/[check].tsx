@@ -7,10 +7,9 @@ import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
-const CheckNext = () => {
+const CheckIsWritePersonalInfo = () => {
   const router = useRouter();
   const { check } = router.query;
-  const [guideText, setGuideText] = useState(['']);
   const [isComplete, setIsComplete] = useState(false);
   const [isBodyCheck, setIsBodyCheck] = useState(true);
 
@@ -24,15 +23,10 @@ const CheckNext = () => {
   useEffect(() => {
     if (check === 'body-check') {
       setIsBodyCheck(true);
-      setGuideText(['신체정보를 기입해주시면', '회원님의 기초대사량을', '측정해드립니다']);
     } else if (check === 'active-check') {
       setIsBodyCheck(false);
-      setGuideText(['활동량을 알려주시면', '회원님께 알맞은 운동 코스를 ', '추천해드립니다']);
     }
-    if (isComplete) {
-      setTimeout(() => router.push('/'), 3300);
-    }
-  }, [check, isComplete]);
+  }, [check]);
 
   return (
     <Container isbodycheck={isBodyCheck}>
@@ -42,9 +36,19 @@ const CheckNext = () => {
         <>
           <div className="check__guide-text">
             <Image src={textPoint} alt="point-illust" />
-            {guideText.map((text, idx) => (
-              <p key={idx}>{text}</p>
-            ))}
+            {check === 'body-check' ? (
+              <>
+                <p>신체정보를 기입해주시면</p>
+                <p>회원님의 기초대사량을</p>
+                <p>측정해드립니다</p>
+              </>
+            ) : (
+              <>
+                <p>활동량을 알려주시면</p>
+                <p>회원님께 알맞은 운동 코스를</p>
+                <p>추천해드립니다</p>
+              </>
+            )}
           </div>
           <div className="check__button">
             <Button type="button" onClick={onMoveNext}>
@@ -60,7 +64,7 @@ const CheckNext = () => {
   );
 };
 
-export default CheckNext;
+export default CheckIsWritePersonalInfo;
 
 export const getServerSideProps = async ({ params }: GetServerSidePropsContext) => {
   if (params?.check !== 'body-check' && params?.check !== 'active-check') {

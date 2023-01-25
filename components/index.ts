@@ -5,3 +5,4 @@ export * from './Errors';
 export * from './Button';
 export * from './Loader';
 export * from './Splash';
+export * from './Modal';
