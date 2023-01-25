@@ -36,10 +36,15 @@ export const Container = styled(Modal)`
 
     button {
       color: inherit;
-      padding: 5px;
       border-radius: 10px;
       border: 1px solid ${(props) => props.theme.colors.darkblue};
       width: 30%;
+      padding: 0;
+
+      a {
+        width: 100%;
+        padding: 5px;
+      }
     }
   }
 `;
