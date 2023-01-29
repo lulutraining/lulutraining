@@ -7,19 +7,20 @@ export const Container = styled.section`
   justify-items: center;
   padding-bottom: 30px;
   position: relative;
+  padding: 0 20px;
 
   .signup__title {
     margin-top: 54px;
 
     img {
-      width: 144px;
-      height: 144px;
+      width: 157px;
+      height: 32px;
     }
 
     p {
-      margin: 34px 0 50px 0;
+      margin: 80px 0;
       font-size: 30px;
-      color: ${(props) => props.theme.colors.pastelblue};
+      color: ${(props) => props.theme.colors.darkgray};
       text-align: center;
     }
   }
@@ -39,7 +40,7 @@ export const Container = styled.section`
       font-size: 18px;
       color: #fff;
       margin-top: 80px;
-      background: ${(props) => props.theme.colors.pastelblue};
+      background: ${(props) => props.theme.colors.darkgray};
     }
   }
 `;
