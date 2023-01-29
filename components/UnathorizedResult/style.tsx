@@ -16,9 +16,9 @@ export const Container = styled(Modal)`
     align-items: center;
     flex-direction: column;
     gap: 20px;
-    color: ${(props) => props.theme.colors.darkblue};
+    color: ${(props) => props.theme.colors.darkgray};
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
-    border-inline: 3px solid #ff4057;
+    border-inline: 3px solid ${(props) => props.theme.colors.pink};
 
     &:focus {
       outline: none;
@@ -37,7 +37,7 @@ export const Container = styled(Modal)`
     button {
       color: inherit;
       border-radius: 10px;
-      border: 1px solid ${(props) => props.theme.colors.darkblue};
+      border: 1px solid ${(props) => props.theme.colors.darkgray};
       width: 30%;
       padding: 0;
 
