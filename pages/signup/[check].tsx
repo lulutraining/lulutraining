@@ -1,6 +1,6 @@
 import { Splash } from 'components';
 import { Container } from 'styles/signupCheck.style';
-import textPoint from 'public/images/text-point.png';
+import logoImage from 'public/images/logo.png';
 import { Button } from '@mui/material';
 import { GetServerSidePropsContext } from 'next';
 import Image from 'next/image';
@@ -29,13 +29,13 @@ const CheckIsWritePersonalInfo = () => {
   }, [check]);
 
   return (
-    <Container isbodycheck={isBodyCheck}>
+    <Container>
       {isComplete ? (
         <Splash />
       ) : (
         <>
+          <Image src={logoImage} alt="lulutraining-image" />
           <div className="check__guide-text">
-            <Image src={textPoint} alt="point-illust" />
             {check === 'body-check' ? (
               <>
                 <p>신체정보를 기입해주시면</p>

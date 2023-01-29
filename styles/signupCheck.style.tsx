@@ -1,12 +1,17 @@
 import styled from '@emotion/styled';
 
-export const Container = styled.section<{ isbodycheck: boolean }>`
+export const Container = styled.section`
   height: 100vh;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   gap: 128px;
+
+  img {
+    width: 157px;
+    height: 32px;
+  }
 
   .check__guide-text {
     position: relative;
@@ -17,15 +22,9 @@ export const Container = styled.section<{ isbodycheck: boolean }>`
 
     p {
       text-align: center;
-      color: ${(props) => props.theme.colors.darkblue};
+      color: ${(props) => props.theme.colors.darkgray};
       font-size: 22px;
       line-height: 1.2;
-    }
-
-    img {
-      position: absolute;
-      top: -17px;
-      left: ${(props) => (props.isbodycheck ? '-22px' : '12px')};
     }
 
     span {
@@ -41,12 +40,12 @@ export const Container = styled.section<{ isbodycheck: boolean }>`
     button {
       width: 200px;
       height: 60px;
-      border: 1px solid ${(props) => props.theme.colors.pastelblue};
+      border: 1px solid ${(props) => props.theme.colors.darkgray};
       font-size: 18px;
       color: inherit;
 
       &:nth-of-type(1) {
-        background: ${(props) => props.theme.colors.pastelblue};
+        background: ${(props) => props.theme.colors.darkgray};
         color: #fff;
       }
     }
