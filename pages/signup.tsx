@@ -63,7 +63,7 @@ const Signup = () => {
         <>
           <div className="signup__title">
             <h1>
-              <Image src={logoImage} alt="oz-logo" priority />
+              <Image src={logoImage} alt="lulutraining-logo" priority />
             </h1>
             <p>회원가입</p>
           </div>
