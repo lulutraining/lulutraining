@@ -3,9 +3,11 @@ import { authAPI } from 'apis/auth';
 import { RequestAuth } from 'types/auth';
 import { authState } from 'store/atoms';
 import { Container } from 'styles/siginin.style';
+import logoImage from '/public/images/logo.png';
 import { useForm } from 'react-hook-form';
 import { Button } from '@mui/material';
 import { useSetRecoilState } from 'recoil';
+import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { FirebaseError } from 'firebase/app';
@@ -48,12 +50,11 @@ const Signin = () => {
 
   return (
     <Container>
-      <div className="signin__header">
-        <h2 className="signin__header-title">
-          오즈<span className="header-small-text">의</span>
-          <br />
-          트레이닝 클럽
-        </h2>
+      <div className="signin__title">
+        <h1>
+          <Image src={logoImage} alt="lulutraining-logo" priority />
+        </h1>
+        <p>로그인</p>
       </div>
       <form onSubmit={handleSubmit(onValidSignin)}>
         <CustomInput
