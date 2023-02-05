@@ -1,37 +1,44 @@
 import styled from '@emotion/styled';
 
 export const Container = styled.section`
-  .signin__header {
-    padding: 30px 0;
-  }
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-items: center;
+  position: relative;
+  padding: 0 20px;
 
-  .signin__header-title {
-    font-size: 45px;
-    line-height: 50px;
-    font-weight: 600;
-    letter-spacing: -0.03em;
-    padding: 30px 0;
-    color: ${(props) => props.theme.colors.darkblue};
+  .signin__title {
+    margin-top: 54px;
 
-    .header-small-text {
-      font-size: 40px;
+    img {
+      width: 157px;
+      height: 32px;
+    }
+
+    p {
+      margin: 60px 0;
+      font-size: 30px;
+      color: ${(props) => props.theme.colors.darkgray};
+      text-align: center;
     }
   }
 
-  .characters__item {
-    width: 15%;
+  form {
+    width: 100%;
+    padding-bottom: 20px;
   }
 
   .signin-btn {
     width: 100%;
     height: 55px;
     border-radius: 5px;
-    margin-top: 30px;
+    margin-top: 40px;
     font-weight: 500;
     font-size: 16px;
     letter-spacing: -0.03em;
     color: #ffffff;
-    background-color: ${(props) => props.theme.colors.darkblue};
+    background-color: ${(props) => props.theme.colors.pink};
     border: 0;
     cursor: pointer;
   }
@@ -41,22 +48,13 @@ export const Container = styled.section`
     height: 55px;
     border-radius: 5px;
     margin-top: 10px;
+    margin-bottom: 80px;
     font-weight: 500;
     font-size: 16px;
     letter-spacing: -0.03em;
-    color: ${(props) => props.theme.colors.darkblue};
-    border: 1px solid ${(props) => props.theme.colors.darkblue};
+    color: ${(props) => props.theme.colors.darkgray};
+    border: 1px solid ${(props) => props.theme.colors.darkgray};
     background-color: transparent;
     cursor: pointer;
-  }
-
-  @media screen and (max-width: ${(props) => props.theme.mq.mobile}) {
-    .signin__header-title {
-      font-size: 35px;
-      line-height: 40px;
-      .header-small-text {
-        font-size: 30px;
-      }
-    }
   }
 `;
