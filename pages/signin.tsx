@@ -1,15 +1,13 @@
 import { AuthError, CustomInput } from 'components';
 import { authAPI } from 'apis/auth';
 import { RequestAuth } from 'types/auth';
-import { authState } from 'store/atoms';
 import { Container } from 'styles/siginin.style';
 import logoImage from '/public/images/logo.png';
 import { useForm } from 'react-hook-form';
 import { Button } from '@mui/material';
-import { useSetRecoilState } from 'recoil';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { FirebaseError } from 'firebase/app';
 
 const Signin = () => {
@@ -19,19 +17,14 @@ const Signin = () => {
     formState: { errors },
   } = useForm<RequestAuth>();
   const router = useRouter();
-  const setProfile = useSetRecoilState(authState);
   const [signinError, setSigninError] = useState('');
 
   const onValidSignin = async ({ email, password }: RequestAuth) => {
     setSigninError('');
     try {
-      const data = await authAPI.signin({
+      await authAPI.signin({
         email,
         password,
-      });
-      localStorage.setItem('oz-user', data.user.uid);
-      setProfile((prevProfile) => {
-        return { ...prevProfile, displayName: data.user.displayName || '' };
       });
       router.push('/');
     } catch (error) {
@@ -40,13 +33,6 @@ const Signin = () => {
       }
     }
   };
-
-  useEffect(() => {
-    const token = localStorage.getItem('oz-user');
-    if (token) {
-      router.push('/');
-    }
-  }, []);
 
   return (
     <Container>

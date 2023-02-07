@@ -1,5 +1,14 @@
-import { collection, doc, DocumentData, getDocs, QuerySnapshot, setDoc } from 'firebase/firestore';
+import {
+  collection,
+  doc,
+  DocumentData,
+  getDoc,
+  getDocs,
+  QuerySnapshot,
+  setDoc,
+} from 'firebase/firestore';
 import { firestore } from 'services/firebase';
+import { UserBodyInfoType } from 'types/auth';
 
 interface DocumentOption {
   collectionName: string;
@@ -7,10 +16,7 @@ interface DocumentOption {
 }
 
 interface BodyWriteDocument extends DocumentOption {
-  gender: string;
-  age: number;
-  height: number;
-  weight: number;
+  body: UserBodyInfoType;
 }
 
 interface ActiveWriteDocument extends DocumentOption {
@@ -23,14 +29,19 @@ export const db = {
   read: (collectionName: string): Promise<QuerySnapshot<DocumentData>> => {
     return getDocs(collection(firestore, collectionName));
   },
+  readDoc: async (data: DocumentOption): Promise<DocumentData | undefined> => {
+    return (await getDoc(doc(firestore, data.collectionName, data.documentName))).data();
+  },
   bodyWrite: (data: BodyWriteDocument): Promise<void> => {
     return setDoc(
       doc(firestore, data.collectionName, data.documentName),
       {
-        gender: data.gender,
-        age: data.age,
-        height: data.height,
-        weight: data.weight,
+        body: {
+          gender: data.body.gender,
+          age: data.body.age,
+          height: data.body.height,
+          weight: data.body.weight,
+        },
       },
       { merge: true }
     );
