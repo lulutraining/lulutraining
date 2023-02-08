@@ -4,13 +4,9 @@ export const Container = styled.div`
   width: 100%;
   height: 100vh;
   display: flex;
-  justify-items: center;
+  justify-content: center;
   align-items: center;
   position: relative;
-
-  svg {
-    flex: 1;
-  }
 
   .loader-text {
     position: absolute;
