@@ -17,10 +17,10 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
           expires: new Date(Date.now() + 336 * 60 * 60 * 1000),
         });
         res.setHeader('Set-Cookie', userToken);
+        res.status(200).json({ message: 'Successfully set cookie!' });
       })
       .catch(() => {
         res.status(401).json({ message: 'invlalid token' });
       });
   }
-  res.status(200).json({ message: 'Successfully set cookie!' });
 };
