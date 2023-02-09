@@ -3,12 +3,16 @@ import { authAPI } from 'apis/auth';
 import { RequestAuth } from 'types/auth';
 import { Container } from 'styles/siginin.style';
 import logoImage from '/public/images/logo.png';
+import { unAuthorizedCheck } from 'utils/unAuthorizedCheck';
 import { useForm } from 'react-hook-form';
 import { Button } from '@mui/material';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { FirebaseError } from 'firebase/app';
+import axios from 'axios';
+import { GetServerSidePropsContext } from 'next';
+import cookies from 'next-cookies';
 
 const Signin = () => {
   const {
@@ -18,14 +22,15 @@ const Signin = () => {
   } = useForm<RequestAuth>();
   const router = useRouter();
   const [signinError, setSigninError] = useState('');
-
   const onValidSignin = async ({ email, password }: RequestAuth) => {
     setSigninError('');
     try {
-      await authAPI.signin({
+      const { user } = await authAPI.signin({
         email,
         password,
       });
+      const token = await user.getIdToken();
+      await axios({ method: 'POST', url: '/api/auth/login', data: { token } });
       router.push('/');
     } catch (error) {
       if (error instanceof FirebaseError) {
@@ -82,3 +87,8 @@ const Signin = () => {
 };
 
 export default Signin;
+
+export const getServerSideProps = async (context: GetServerSidePropsContext) => {
+  const { user } = cookies(context);
+  return await unAuthorizedCheck({ user, context });
+};

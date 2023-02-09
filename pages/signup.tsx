@@ -3,12 +3,16 @@ import { authAPI } from 'apis/auth';
 import { RequestSignup } from 'types/auth';
 import logoImage from '/public/images/logo.png';
 import { Container } from 'styles/signup.style';
+import { unAuthorizedCheck } from 'utils/unAuthorizedCheck';
 import { useForm } from 'react-hook-form';
 import { Button } from '@mui/material';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { FirebaseError } from 'firebase/app';
+import { GetServerSidePropsContext } from 'next';
+import cookies from 'next-cookies';
+import axios from 'axios';
 
 const Signup = () => {
   const router = useRouter();
@@ -31,6 +35,8 @@ const Signup = () => {
         user: user,
         displayName: displayName,
       });
+      const token = await user.getIdToken();
+      await axios({ method: 'POST', url: '/api/auth/login', data: { token } });
       router.push('/signup/body-check');
     } catch (error) {
       if (error instanceof FirebaseError) {
@@ -109,3 +115,8 @@ const Signup = () => {
 };
 
 export default Signup;
+
+export const getServerSideProps = async (context: GetServerSidePropsContext) => {
+  const { user } = cookies(context);
+  return await unAuthorizedCheck({ user, context });
+};
