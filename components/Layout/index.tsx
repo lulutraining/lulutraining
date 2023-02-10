@@ -1,14 +1,13 @@
 import { Container } from './style';
-import { authAPI } from 'apis/auth';
+import { authAPI, localAuth } from 'apis/auth';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
-import axios from 'axios';
 
 export const Layout = ({ children }: React.PropsWithChildren) => {
   const router = useRouter();
   const onSingOut = async () => {
     await authAPI.signout();
-    await axios({ method: 'POST', url: '/api/auth/logout' });
+    await localAuth.signout();
     router.push('/signin');
   };
 

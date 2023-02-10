@@ -1,3 +1,4 @@
+import { InitialUserInfo } from 'consts/initialUserInfo';
 import { GetServerSidePropsContext } from 'next';
 import { adminAuth, adminStore } from 'services/admin';
 import { serialize } from 'cookie';
@@ -13,10 +14,7 @@ export const unAuthorizedCheck = async (data: VerifyUserType) => {
   const verifyUser = async (user: string) => {
     return await adminAuth.verifySessionCookie(user, true);
   };
-  let userInfo = {
-    uid: '',
-    displayName: '',
-  };
+  let userInfo = {};
 
   if (data.user) {
     try {
@@ -24,7 +22,11 @@ export const unAuthorizedCheck = async (data: VerifyUserType) => {
       const { displayName } = await adminAuth.getUser(uid);
       if (displayName) {
         const userPersonalData = (await adminStore.doc(`users/${uid}`).get()).data();
-        userInfo = { ...userInfo, ...userPersonalData, uid, displayName };
+        if (userPersonalData) {
+          userInfo = { ...InitialUserInfo, ...userPersonalData, uid, displayName };
+        } else {
+          userInfo = { ...InitialUserInfo, uid, displayName };
+        }
       }
       if (current === '/signin' || current === '/signup') {
         return {

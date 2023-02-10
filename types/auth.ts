@@ -9,12 +9,6 @@ export interface RequestSignup extends RequestAuth {
   displayName: string;
 }
 
-export interface UserProfile {
-  uid: string;
-  displayName: string | null;
-  body: UserBodyInfoType;
-}
-
 export interface UpdateUserProfile {
   user: User;
   displayName: string;
@@ -28,6 +22,8 @@ export interface UserBodyInfoType {
 }
 
 export interface UserInfoType {
+  uid: string;
+  displayName: string;
   active: {
     [key: string]: number;
   };

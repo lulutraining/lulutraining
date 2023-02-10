@@ -1,5 +1,5 @@
 import { AuthError, CustomInput, Loader } from 'components';
-import { authAPI } from 'apis/auth';
+import { authAPI, localAuth } from 'apis/auth';
 import { RequestSignup } from 'types/auth';
 import logoImage from '/public/images/logo.png';
 import { Container } from 'styles/signup.style';
@@ -12,7 +12,6 @@ import { useState } from 'react';
 import { FirebaseError } from 'firebase/app';
 import { GetServerSidePropsContext } from 'next';
 import cookies from 'next-cookies';
-import axios from 'axios';
 
 const Signup = () => {
   const router = useRouter();
@@ -36,7 +35,7 @@ const Signup = () => {
         displayName: displayName,
       });
       const token = await user.getIdToken();
-      await axios({ method: 'POST', url: '/api/auth/login', data: { token } });
+      await localAuth.signin(token);
       router.push('/signup/body-check');
     } catch (error) {
       if (error instanceof FirebaseError) {
