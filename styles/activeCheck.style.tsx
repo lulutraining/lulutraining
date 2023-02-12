@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import { Button, LinearProgress, ToggleButtonGroup } from '@mui/material';
 
-export const Container: React.ElementType = styled.div`
+export const Container = styled.div`
   padding: 0 20px;
   display: flex;
   flex-direction: column;
