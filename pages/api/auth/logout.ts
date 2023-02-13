@@ -2,10 +2,10 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import { serialize } from 'cookie';
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
-  const userToken = serialize('user', 'no', {
+  const userToken = serialize('user', '', {
     httpOnly: true,
     path: '/',
-    expires: new Date(Date.now() + 336 * 60 * 60 * 1000),
+    expires: new Date(Date.now() - 24 * 60 * 60 * 1000),
   });
   const userInfo = serialize('userProfile', '', {
     httpOnly: true,

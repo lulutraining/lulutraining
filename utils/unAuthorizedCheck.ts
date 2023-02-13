@@ -36,10 +36,10 @@ export const unAuthorizedCheck = async (data: VerifyUserType) => {
         };
       }
     } catch (error) {
-      const userToken = serialize('user', 'no', {
+      const userToken = serialize('user', '', {
         httpOnly: true,
         path: '/',
-        expires: new Date(Date.now() + 336 * 60 * 60 * 1000),
+        expires: new Date(Date.now() - 24 * 60 * 60 * 1000),
       });
       data.context.res.setHeader('Set-Cookie', userToken);
       if (current === '/bodycheck' || current === '/activecheck') {
@@ -49,6 +49,14 @@ export const unAuthorizedCheck = async (data: VerifyUserType) => {
           },
         };
       }
+    }
+  } else {
+    if (current === '/bodycheck' || current === '/activecheck') {
+      return {
+        redirect: {
+          destination: '/signin',
+        },
+      };
     }
   }
 
