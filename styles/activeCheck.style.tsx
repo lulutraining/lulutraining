@@ -44,35 +44,6 @@ export const Container = styled.div`
       max-width: 100%;
     }
   }
-  .activecheck__result-title {
-    font-family: 'Noto Sans KR', sans-serif;
-    font-size: 28px;
-    line-height: 1.5;
-    font-weight: 700;
-    letter-spacing: -0.03em;
-    text-align: center;
-    margin-top: 10vh;
-  }
-  .activecheck__result-banner {
-    position: relative;
-    text-align: center;
-    img {
-      width: 100%;
-      max-width: 400px;
-      height: auto;
-    }
-    span {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      color: #fff;
-      font-weight: 600;
-      font-size: 29px;
-      line-height: 35px;
-      letter-spacing: -0.03em;
-    }
-  }
   @media screen and (max-width: ${(props) => props.theme.mq.mobile}) {
     .activecheck__progress {
       padding: 4vh 5% 2vh;
