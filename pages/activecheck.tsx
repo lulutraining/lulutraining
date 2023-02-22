@@ -1,8 +1,14 @@
-import { PrevNextButton } from 'components';
-import { Container, CustomLinearProgress, CustomToggleButtonGroup } from 'styles/activeCheck.style';
-import { useEffect, useState } from 'react';
-import { Box, ToggleButton } from '@mui/material';
+import {
+  Container,
+  CustomButton,
+  CustomLinearProgress,
+  CustomToggleButtonGroup,
+} from 'styles/activeCheck.style';
+import { ActivecheckResult, Loader } from 'components';
 import { db } from 'apis/database';
+import { useForm } from 'react-hook-form';
+import { Box, ToggleButton } from '@mui/material';
+import { useEffect, useState } from 'react';
 import { FirebaseError } from 'firebase/app';
 
 interface UserAnswer {
@@ -20,9 +26,8 @@ interface AnswerProps {
 }
 
 const ActiveCheck = ({ questionList }: { questionList: QuestionListProps[] }) => {
-  const [actPage, setActPage] = useState(0);
-  const [progress, setProgress] = useState(100 / questionList.length);
-  const [answer, setAnswer] = useState(0);
+  const [userAnswerCount, setUserAnswerCount] = useState(0);
+  const [progress, setProgress] = useState(0);
   const [userAnswer, setUserAnswer] = useState<UserAnswer>({
     answer1: 0,
     answer2: 0,
@@ -30,87 +35,106 @@ const ActiveCheck = ({ questionList }: { questionList: QuestionListProps[] }) =>
     answer4: 0,
     answer5: 0,
   });
+  const [isAnswerCompleted, setIsAnswerCompleted] = useState(false);
+  const [isSubmission, setIsSubmission] = useState(false);
+  const [userActiveScore, setUserActiveScore] = useState('');
+  const { handleSubmit } = useForm();
 
-  const handleChangeAnswer = (event: React.MouseEvent<HTMLElement>, answerCount: number) => {
-    setAnswer(answerCount);
-    setUserAnswer({ ...userAnswer, [`answer${actPage + 1}`]: answerCount });
+  const handleChangeAnswer = (answerCount: number, index: number) => {
+    setUserAnswer({ ...userAnswer, [`answer${index + 1}`]: !answerCount ? 0 : answerCount });
   };
 
-  const onClickPrev = () => {
-    setActPage((prev) => prev - 1);
-  };
-
-  const onClickNext = async () => {
-    if (answer === 0) {
-      return alert('답을 선택해주세요.');
+  const onVailActiveCheck = async () => {
+    if (!isAnswerCompleted) {
+      return alert('모든 질문에 답을 선택해주세요.');
     }
 
-    if (actPage === questionList.length - 1) {
-      if (typeof window !== undefined) {
-        const user = localStorage.getItem('oz-user');
-        if (user) {
-          try {
-            await db.activeWrite({
-              collectionName: 'users',
-              documentName: user,
-              active: userAnswer,
-            });
-          } catch (error) {
-            if (error instanceof FirebaseError) {
-              console.log(error);
-            }
+    setIsSubmission(true);
+    if (typeof window !== undefined) {
+      const user = localStorage.getItem('oz-user');
+      if (user) {
+        try {
+          await db.activeWrite({
+            collectionName: 'users',
+            documentName: user,
+            active: userAnswer,
+          });
+          const totalScore = Object.values(userAnswer).reduce((a, b) => a + b);
+          setUserActiveScore(totalScore <= 10 ? '초급' : totalScore <= 15 ? '중급' : '고급');
+        } catch (error) {
+          if (error instanceof FirebaseError) {
+            console.log(error);
           }
         }
       }
-    } else {
-      setActPage((prev) => prev + 1);
     }
   };
 
   useEffect(() => {
-    setProgress((100 / questionList.length) * (actPage + 1));
-    setAnswer(userAnswer[`answer${actPage + 1}`]);
-  }, [actPage, userAnswer]);
+    const count = Object.values(userAnswer).filter((answer) => answer !== 0).length;
+    setUserAnswerCount(count);
+    setProgress((100 / questionList.length) * count);
+
+    if (userAnswerCount === questionList.length) {
+      setIsAnswerCompleted(true);
+    } else {
+      setIsAnswerCompleted(false);
+    }
+  }, [userAnswer, userAnswerCount]);
 
   return (
     <Container>
-      <div className="activecheck__progress">
-        <div className="activecheck__progress-text">
-          질문의 답을 선택해주세요 🚀
-          <ul>
-            <li>{actPage + 1}</li>
-            <li>/</li>
-            <li>{questionList.length}</li>
-          </ul>
-        </div>
-        <Box sx={{ width: '100%' }}>
-          <CustomLinearProgress variant="determinate" value={progress} />
-        </Box>
-      </div>
+      {isSubmission ? (
+        userActiveScore === '' ? (
+          <Loader loaderText="분석중입니다"></Loader>
+        ) : (
+          <ActivecheckResult grade={userActiveScore} />
+        )
+      ) : (
+        <>
+          <div className="activecheck__progress">
+            <div className="activecheck__progress-text">
+              질문의 답을 선택해주세요 🚀
+              <ul>
+                <li>{userAnswerCount}</li>
+                <li>/</li>
+                <li>{questionList.length}</li>
+              </ul>
+            </div>
+            <Box sx={{ width: '100%' }}>
+              <CustomLinearProgress variant="determinate" value={progress} />
+            </Box>
+          </div>
+          <form onSubmit={handleSubmit(onVailActiveCheck)}>
+            {questionList.map((list, index) => (
+              <section key={index}>
+                <h2>Q. {list.question}</h2>
+                <CustomToggleButtonGroup
+                  orientation="vertical"
+                  defaultValue={userAnswer[`answer${index + 1}`]}
+                  value={userAnswer[`answer${index + 1}`]}
+                  exclusive
+                  onChange={(event, answerCount) => handleChangeAnswer(answerCount, index)}
+                >
+                  {list.answer.map((answerList) => (
+                    <ToggleButton
+                      className="answer-button"
+                      value={answerList.count}
+                      key={answerList.count}
+                    >
+                      {answerList.text}
+                    </ToggleButton>
+                  ))}
+                </CustomToggleButtonGroup>
+              </section>
+            ))}
 
-      <section>
-        <h2>Q. {questionList[actPage].question}</h2>
-        <CustomToggleButtonGroup
-          orientation="vertical"
-          defaultValue={userAnswer[`answer${actPage + 1}`]}
-          value={answer}
-          exclusive
-          onChange={handleChangeAnswer}
-        >
-          {questionList[actPage].answer.map((list) => (
-            <ToggleButton className="answer-button" value={list.count} key={list.count}>
-              {list.text}
-            </ToggleButton>
-          ))}
-        </CustomToggleButtonGroup>
-      </section>
-
-      <PrevNextButton
-        onClickPrev={onClickPrev}
-        onClickNext={onClickNext}
-        nextButtonType={'button'}
-        prevBtnVisible={actPage !== 0 ? true : false}
-      />
+            <CustomButton variant={isAnswerCompleted ? 'contained' : 'outlined'} type="submit">
+              완료
+            </CustomButton>
+          </form>
+        </>
+      )}
     </Container>
   );
 };
