@@ -1,17 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { serialize } from 'cookie';
+import { removeCookie } from 'utils/removeCookie';
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
-  const userToken = serialize('user', '', {
-    httpOnly: true,
-    path: '/',
-    expires: new Date(Date.now() - 24 * 60 * 60 * 1000),
-  });
-  const userInfo = serialize('userProfile', '', {
-    httpOnly: true,
-    path: '/',
-    expires: new Date(Date.now() - 24 * 60 * 60 * 1000),
-  });
-  res.setHeader('Set-Cookie', [userToken, userInfo]);
+  res.setHeader('Set-Cookie', [removeCookie('user'), removeCookie('userProfile')]);
   res.status(200).json({ message: 'Successfully remove cookie!' });
 };
