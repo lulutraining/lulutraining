@@ -10,12 +10,10 @@ export interface VerifyUserType {
 
 export const unAuthorizedCheck = async (data: VerifyUserType) => {
   const current = data.context.resolvedUrl;
-  const verifyUser = async (user: string) => {
-    return await adminAuth.verifySessionCookie(user, true);
-  };
+
   if (data.user) {
     try {
-      await verifyUser(data.user);
+      await adminAuth.verifySessionCookie(data.user, true);
       if (current === '/signin' || current === '/signup') {
         return {
           redirect: {
