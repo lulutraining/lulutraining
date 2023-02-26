@@ -1,11 +1,22 @@
-import { UserProfile } from 'types/auth';
-import { localStorageEffect } from './atomEffect';
+import { UserInfoType } from 'types/auth';
+import { setCookieEffect } from './atomEffect';
 import { atom } from 'recoil';
+import { v1 } from 'uuid';
 
-export const authState = atom<UserProfile>({
-  key: 'auth/profile',
-  default: {
-    displayName: '',
+export const InitialUserInfo = {
+  uid: '',
+  displayName: '',
+  body: {
+    gender: '',
+    age: '',
+    height: '',
+    weight: '',
   },
-  effects: [localStorageEffect('oz-user-profile')],
+  active: {},
+};
+
+export const authState = atom<UserInfoType>({
+  key: `auth/profile${v1()}`,
+  default: InitialUserInfo,
+  effects_UNSTABLE: [setCookieEffect('userProfile')],
 });
