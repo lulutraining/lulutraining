@@ -1,14 +1,24 @@
 import { Layout } from 'components';
 import { ResetStyle } from 'styles/global';
 import { theme } from 'styles/theme';
+import { UserInfoType } from 'types/auth';
+import { authState, InitialUserInfo } from 'store/atoms';
 import { Global } from '@emotion/react';
 import { ThemeProvider } from '@emotion/react';
-import type { AppProps } from 'next/app';
-import { RecoilRoot } from 'recoil';
+import { MutableSnapshot, RecoilRoot } from 'recoil';
+import cookies from 'next-cookies';
+import type { AppContext, AppProps } from 'next/app';
 
-export default function App({ Component, pageProps }: AppProps) {
+interface MyAppProps extends AppProps {
+  userProfile: UserInfoType;
+}
+
+export default function App({ Component, pageProps, userProfile }: MyAppProps) {
+  const initialState = ({ set }: MutableSnapshot) => {
+    set(authState, userProfile ? userProfile : InitialUserInfo);
+  };
   return (
-    <RecoilRoot>
+    <RecoilRoot initializeState={initialState}>
       <ThemeProvider theme={theme}>
         <Global styles={ResetStyle} />
         <Layout>
@@ -18,3 +28,8 @@ export default function App({ Component, pageProps }: AppProps) {
     </RecoilRoot>
   );
 }
+
+App.getInitialProps = async ({ ctx }: AppContext) => {
+  const { userProfile } = cookies(ctx);
+  return { userProfile };
+};
