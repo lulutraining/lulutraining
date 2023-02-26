@@ -5,31 +5,23 @@ import { adminAuth, adminStore } from 'services/admin';
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   const { token } = req.body;
-  const verifyToken = async (token: string) => {
-    return await adminAuth.verifyIdToken(token, true);
-  };
-  const verifyUser = async (user: string) => {
-    return await adminAuth.verifySessionCookie(user, true);
-  };
-  const createCookie = async (token: string) => {
-    return await adminAuth.createSessionCookie(token, {
-      expiresIn: 336 * 60 * 60 * 1000,
-    });
-  };
 
   let userInfo = {};
 
   if (token) {
     try {
-      await verifyToken(token);
-      const getSessionCookie = await createCookie(token);
+      await adminAuth.verifyIdToken(token, true);
+      const getSessionCookie = await adminAuth.createSessionCookie(token, {
+        expiresIn: 24 * 14 * 60 * 60 * 1000,
+      });
+
       const userToken = serialize('user', getSessionCookie, {
         httpOnly: true,
         path: '/',
-        expires: new Date(Date.now() + 336 * 60 * 60 * 1000),
+        expires: new Date(Date.now() + 24 * 14 * 60 * 60 * 1000),
       });
 
-      const { uid } = await verifyUser(getSessionCookie);
+      const { uid } = await adminAuth.verifySessionCookie(getSessionCookie, true);
       const { displayName } = await adminAuth.getUser(uid);
       if (displayName) {
         const userPersonalData = (await adminStore.doc(`users/${uid}`).get()).data();
