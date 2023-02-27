@@ -30,6 +30,9 @@ export const CustomInput = (props: CustomInputProps) => {
         helperText={errorMsg}
         autoComplete="off"
         defaultValue={value}
+        inputProps={{
+          step: '0.1',
+        }}
       />
       {label === 'Password' && (
         <PasswordVisibility visible={passwordVisible} setVisible={setPasswordVisible} />
