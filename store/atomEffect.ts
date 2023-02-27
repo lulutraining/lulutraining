@@ -1,13 +1,20 @@
+import { Cookies } from 'react-cookie';
 import { AtomEffect } from 'recoil';
 
-export const localStorageEffect =
+export const setCookieEffect =
   <T>(key: string): AtomEffect<T> =>
   ({ setSelf, onSet }) => {
-    const savedValue = localStorage.getItem(key);
-    if (savedValue != null) {
-      setSelf(JSON.parse(savedValue));
+    if (typeof window !== 'undefined') {
+      const cookies = new Cookies();
+      const savedValue = cookies.get(key);
+      if (savedValue != null) {
+        setSelf(savedValue);
+      }
+      onSet((newValue) => {
+        cookies.set(key, newValue, {
+          path: '/',
+          expires: new Date(Date.now() + 24 * 14 * 60 * 60 * 1000),
+        });
+      });
     }
-    onSet((newValue) => {
-      localStorage.setItem(key, JSON.stringify(newValue));
-    });
   };
