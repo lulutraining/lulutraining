@@ -26,21 +26,19 @@ const BodyCheck = () => {
     handleSubmit,
     formState: { errors },
   } = useForm<UserBodyInfoType>();
-
   const bodyCheckValidate = ({ requiredText, maxNum }: ValidateParams) => {
     return {
       required: requiredText,
       validate: {
-        limitNum: (value: string) => {
-          if (Number(value) > maxNum || Number(value) === 0) {
+        limitNum: (value: number) => {
+          if (value > maxNum || value === 0) {
             return '다시 확인해주세요';
           }
         },
       },
     };
   };
-
-  const onSaveBodyInfo = async (valid: UserBodyInfoType) => {
+  const handleSaveBodyInfo = async (valid: UserBodyInfoType) => {
     const { gender, age, height, weight } = valid;
     try {
       await db.bodyWrite({
@@ -64,7 +62,6 @@ const BodyCheck = () => {
       console.error(error);
     }
   };
-
   return (
     <Container>
       <div className="bodyCheck__title">
@@ -73,8 +70,7 @@ const BodyCheck = () => {
         </h1>
         <p>개인정보</p>
       </div>
-
-      <form onSubmit={handleSubmit(onSaveBodyInfo)}>
+      <form onSubmit={handleSubmit(handleSaveBodyInfo)}>
         <div className="bodyCheck__gender-check">
           <div className="custom-radio">
             <label htmlFor="female">
@@ -98,7 +94,6 @@ const BodyCheck = () => {
           </div>
           {errors.gender ? <FormHelperText>{errors.gender?.message}</FormHelperText> : null}
         </div>
-
         <CustomInput
           register={register(
             'age',
@@ -111,7 +106,6 @@ const BodyCheck = () => {
           value={body.age}
           errorMsg={errors.gender ? '' : errors.age?.message}
         />
-
         <div className="bodyCheck__bodyinfo">
           <div className="bodyCheck__bodyinfo-items">
             <CustomInput
@@ -147,7 +141,6 @@ const BodyCheck = () => {
             </FormHelperText>
           ) : null}
         </div>
-
         <div className="bodyCheck__submit-button">
           <Button type="submit">완료</Button>
         </div>

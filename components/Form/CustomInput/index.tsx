@@ -11,7 +11,7 @@ interface CustomInputProps {
   type: string;
   placeholder: string;
   errorMsg?: string;
-  value?: string;
+  value?: string | number;
 }
 
 export const CustomInput = (props: CustomInputProps) => {
@@ -32,6 +32,7 @@ export const CustomInput = (props: CustomInputProps) => {
         defaultValue={value}
         inputProps={{
           step: '0.1',
+          min: 0,
         }}
       />
       {label === 'Password' && (

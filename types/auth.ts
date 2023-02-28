@@ -16,9 +16,9 @@ export interface UpdateUserProfile {
 
 export interface UserBodyInfoType {
   gender: string;
-  age: string;
-  height: string;
-  weight: string;
+  age: number;
+  height: number;
+  weight: number;
 }
 
 export interface UserInfoType {
