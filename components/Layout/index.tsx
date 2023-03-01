@@ -5,7 +5,8 @@ import { useRouter } from 'next/router';
 
 export const Layout = ({ children }: React.PropsWithChildren) => {
   const router = useRouter();
-  const onSingOut = async () => {
+
+  const handleSingOut = async () => {
     await authAPI.signout();
     await localAuth.signout();
     router.push('/signin');
@@ -16,7 +17,7 @@ export const Layout = ({ children }: React.PropsWithChildren) => {
       <Head>
         <title>룰루트레이닝</title>
       </Head>
-      <button onClick={onSingOut}>로그아웃</button>
+      {/* <button onClick={handleSingOut}>로그아웃</button> */}
       <Container>{children}</Container>
     </>
   );
