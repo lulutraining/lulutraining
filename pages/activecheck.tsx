@@ -5,11 +5,17 @@ import {
   CustomToggleButtonGroup,
 } from 'styles/activeCheck.style';
 import { ActivecheckResult, Loader } from 'components';
+import { unAuthorizedCheck } from 'utils/unAuthorizedCheck';
+import { DEFAULT_LEVEL } from 'consts';
 import { db } from 'apis/database';
 import { useForm } from 'react-hook-form';
 import { Box, ToggleButton } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { FirebaseError } from 'firebase/app';
+import { GetServerSidePropsContext } from 'next';
+import cookies from 'next-cookies';
+import { useRecoilState } from 'recoil';
+import { authState } from 'store/atoms';
 
 interface UserAnswer {
   [answer: string]: number;
@@ -26,46 +32,51 @@ interface AnswerProps {
 }
 
 const ActiveCheck = ({ questionList }: { questionList: QuestionListProps[] }) => {
+  const [{ uid, active }, setUserInfo] = useRecoilState(authState);
   const [userAnswerCount, setUserAnswerCount] = useState(0);
-  const [progress, setProgress] = useState(0);
-  const [userAnswer, setUserAnswer] = useState<UserAnswer>({
-    answer1: 0,
-    answer2: 0,
-    answer3: 0,
-    answer4: 0,
-    answer5: 0,
-  });
-  const [isAnswerCompleted, setIsAnswerCompleted] = useState(false);
   const [isSubmission, setIsSubmission] = useState(false);
-  const [userActiveScore, setUserActiveScore] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const [userAnswer, setUserAnswer] = useState<UserAnswer>(active.answer);
   const { handleSubmit } = useForm();
 
   const handleChangeAnswer = (answerCount: number, index: number) => {
-    setUserAnswer({ ...userAnswer, [`answer${index + 1}`]: !answerCount ? 0 : answerCount });
+    setUserAnswer((prev) => {
+      return { ...prev, [`answer${index + 1}`]: !answerCount ? 0 : answerCount };
+    });
   };
 
   const onVailActiveCheck = async () => {
-    if (!isAnswerCompleted) {
+    if (userAnswerCount !== questionList.length) {
       return alert('모든 질문에 답을 선택해주세요.');
     }
 
     setIsSubmission(true);
-    if (typeof window !== undefined) {
-      const user = localStorage.getItem('oz-user');
-      if (user) {
-        try {
-          await db.activeWrite({
-            collectionName: 'users',
-            documentName: user,
-            active: userAnswer,
-          });
-          const totalScore = Object.values(userAnswer).reduce((a, b) => a + b);
-          setUserActiveScore(totalScore <= 10 ? '초급' : totalScore <= 15 ? '중급' : '고급');
-        } catch (error) {
-          if (error instanceof FirebaseError) {
-            console.log(error);
-          }
-        }
+    setIsLoading(true);
+
+    const totalScore = Object.values(userAnswer).reduce((a, b) => a + b);
+    const grade =
+      totalScore <= 10
+        ? DEFAULT_LEVEL.basic
+        : totalScore <= 15
+        ? DEFAULT_LEVEL.advanced
+        : DEFAULT_LEVEL.intermediate;
+    try {
+      await db.activeWrite({
+        collectionName: 'users',
+        documentName: uid,
+        active: {
+          answer: userAnswer,
+          grade,
+        },
+      });
+      setUserInfo((prev) => {
+        return { ...prev, active: { answer: userAnswer, grade } };
+      });
+
+      setIsLoading(false);
+    } catch (error) {
+      if (error instanceof FirebaseError) {
+        console.log(error);
       }
     }
   };
@@ -73,22 +84,15 @@ const ActiveCheck = ({ questionList }: { questionList: QuestionListProps[] }) =>
   useEffect(() => {
     const count = Object.values(userAnswer).filter((answer) => answer !== 0).length;
     setUserAnswerCount(count);
-    setProgress((100 / questionList.length) * count);
-
-    if (userAnswerCount === questionList.length) {
-      setIsAnswerCompleted(true);
-    } else {
-      setIsAnswerCompleted(false);
-    }
-  }, [userAnswer, userAnswerCount]);
+  }, [userAnswer]);
 
   return (
     <Container>
       {isSubmission ? (
-        userActiveScore === '' ? (
+        isLoading ? (
           <Loader loaderText="분석중입니다"></Loader>
         ) : (
-          <ActivecheckResult grade={userActiveScore} />
+          active.grade && <ActivecheckResult grade={active.grade} />
         )
       ) : (
         <>
@@ -102,7 +106,10 @@ const ActiveCheck = ({ questionList }: { questionList: QuestionListProps[] }) =>
               </ul>
             </div>
             <Box sx={{ width: '100%' }}>
-              <CustomLinearProgress variant="determinate" value={progress} />
+              <CustomLinearProgress
+                variant="determinate"
+                value={(100 / questionList.length) * userAnswerCount}
+              />
             </Box>
           </div>
           <form onSubmit={handleSubmit(onVailActiveCheck)}>
@@ -129,7 +136,10 @@ const ActiveCheck = ({ questionList }: { questionList: QuestionListProps[] }) =>
               </section>
             ))}
 
-            <CustomButton variant={isAnswerCompleted ? 'contained' : 'outlined'} type="submit">
+            <CustomButton
+              variant={userAnswerCount === questionList.length ? 'contained' : 'outlined'}
+              type="submit"
+            >
               완료
             </CustomButton>
           </form>
@@ -139,14 +149,16 @@ const ActiveCheck = ({ questionList }: { questionList: QuestionListProps[] }) =>
   );
 };
 
-export async function getStaticProps() {
+export default ActiveCheck;
+
+export const getStaticProps = async (context: GetServerSidePropsContext) => {
   const list = await db.read('activeQuestion');
+  const { user } = cookies(context);
+
   let questionList;
   list.forEach((doc) => {
     questionList = doc.data()['list'];
   });
 
-  return { props: { questionList } };
-}
-
-export default ActiveCheck;
+  return await unAuthorizedCheck({ user, context }), { props: { questionList } };
+};

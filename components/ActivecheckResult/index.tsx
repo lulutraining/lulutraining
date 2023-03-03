@@ -1,9 +1,10 @@
 import { Container, CustomButton } from './style';
 import basicImage from '/public/images/activecheck/basic.png';
 import intermediateImage from '/public/images/activecheck/intermediate.png';
-import advencedImage from '/public/images/activecheck/advenced.png';
+import advancedImage from '/public/images/activecheck/advanced.png';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
+import { DEFAULT_LEVEL } from 'consts';
 
 interface ActivecheckResultProps {
   grade: string;
@@ -11,7 +12,11 @@ interface ActivecheckResultProps {
 
 export const ActivecheckResult = ({ grade }: ActivecheckResultProps) => {
   const router = useRouter();
-
+  const imgUrl = {
+    [DEFAULT_LEVEL.basic]: basicImage,
+    [DEFAULT_LEVEL.advanced]: advancedImage,
+    [DEFAULT_LEVEL.intermediate]: intermediateImage,
+  };
   const handleClickGoMain = () => {
     router.push('/');
   };
@@ -24,13 +29,7 @@ export const ActivecheckResult = ({ grade }: ActivecheckResultProps) => {
         운동코스를 추천해줄게요
       </p>
       <div className="activecheck__result-banner">
-        {
-          {
-            초급: <Image src={basicImage} alt={grade} priority />,
-            중급: <Image src={intermediateImage} alt={grade} priority />,
-            고급: <Image src={advencedImage} alt={grade} priority />,
-          }[grade]
-        }
+        <Image src={imgUrl[grade]} alt={grade} priority />
         <span>{grade}</span>
       </div>
       <CustomButton variant="contained" type="button" onClick={handleClickGoMain}>
