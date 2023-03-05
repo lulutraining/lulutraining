@@ -16,6 +16,7 @@ import { GetServerSidePropsContext } from 'next';
 import cookies from 'next-cookies';
 import { useRecoilState } from 'recoil';
 import { authState } from 'store/atoms';
+import { adminStore } from 'services/admin';
 
 interface UserAnswer {
   [answer: string]: number;
@@ -151,14 +152,9 @@ const ActiveCheck = ({ questionList }: { questionList: QuestionListProps[] }) =>
 
 export default ActiveCheck;
 
-export const getStaticProps = async (context: GetServerSidePropsContext) => {
-  const list = await db.read('activeQuestion');
+export const getServerSideProps = async (context: GetServerSidePropsContext) => {
   const { user } = cookies(context);
+  const getQuestion = (await adminStore.doc('activeQuestion/qeustion').get()).data();
 
-  let questionList;
-  list.forEach((doc) => {
-    questionList = doc.data()['list'];
-  });
-
-  return await unAuthorizedCheck({ user, context }), { props: { questionList } };
+  return await unAuthorizedCheck({ user, context }), { props: { questionList: getQuestion?.list } };
 };
