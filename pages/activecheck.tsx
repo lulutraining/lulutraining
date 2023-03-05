@@ -156,5 +156,9 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
   const { user } = cookies(context);
   const getQuestion = (await adminStore.doc('activeQuestion/qeustion').get()).data();
 
-  return await unAuthorizedCheck({ user, context }), { props: { questionList: getQuestion?.list } };
+  return await unAuthorizedCheck({
+    user,
+    context,
+    propsOption: { questionList: getQuestion?.list },
+  });
 };

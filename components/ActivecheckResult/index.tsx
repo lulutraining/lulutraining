@@ -26,7 +26,7 @@ export const ActivecheckResult = ({ grade }: ActivecheckResultProps) => {
       <p className="activecheck__result-title">
         룰루트레이닝
         <br />
-        운동코스를 추천해줄게요
+        운동코스를 추천해드릴게요
       </p>
       <div className="activecheck__result-banner">
         <Image src={imgUrl[grade]} alt={grade} priority />
