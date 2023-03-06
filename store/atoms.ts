@@ -1,3 +1,4 @@
+import { DEFAULT_LEVEL } from 'consts';
 import { UserInfoType } from 'types/auth';
 import { setCookieEffect } from './atomEffect';
 import { atom } from 'recoil';
@@ -8,11 +9,20 @@ export const InitialUserInfo = {
   displayName: '',
   body: {
     gender: '',
-    age: '',
-    height: '',
-    weight: '',
+    age: 0,
+    height: 0,
+    weight: 0,
   },
-  active: {},
+  active: {
+    answer: {
+      answer1: 0,
+      answer2: 0,
+      answer3: 0,
+      answer4: 0,
+      answer5: 0,
+    },
+    grade: DEFAULT_LEVEL.basic,
+  },
 };
 
 export const authState = atom<UserInfoType>({

@@ -21,11 +21,14 @@ export interface UserBodyInfoType {
   weight: number;
 }
 
+export interface UserActiveInfoType {
+  answer: { [answer: string]: number };
+  grade: string;
+}
+
 export interface UserInfoType {
   uid: string;
   displayName: string;
-  active: {
-    [key: string]: number;
-  };
+  active: UserActiveInfoType;
   body: UserBodyInfoType;
 }

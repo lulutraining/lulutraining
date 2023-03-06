@@ -8,7 +8,7 @@ import {
   setDoc,
 } from 'firebase/firestore';
 import { firestore } from 'services/firebase';
-import { UserBodyInfoType } from 'types/auth';
+import { UserActiveInfoType, UserBodyInfoType } from 'types/auth';
 
 interface DocumentOption {
   collectionName: string;
@@ -20,9 +20,7 @@ interface BodyWriteDocument extends DocumentOption {
 }
 
 interface ActiveWriteDocument extends DocumentOption {
-  active: {
-    [answer: string]: number;
-  };
+  active: UserActiveInfoType;
 }
 
 export const db = {
@@ -50,7 +48,10 @@ export const db = {
     return setDoc(
       doc(firestore, data.collectionName, data.documentName),
       {
-        active: data.active,
+        active: {
+          answer: data.active.answer,
+          grade: data.active.grade,
+        },
       },
       { merge: true }
     );
