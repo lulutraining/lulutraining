@@ -8,13 +8,16 @@ export const Header = () => {
   const router = useRouter();
 
   const handleClickUserIcon = () => {
+    router.push('/mypage');
+  };
+
+  const handleClickLogo = () => {
     router.push('/');
-    // mypage 작업 완료 후 변경
   };
 
   return (
     <Container>
-      <h1 className="header__logo">
+      <h1 className="header__logo" onClick={handleClickLogo}>
         <Image src={logoImage} alt="lulutraining-logo" priority />
       </h1>
       <StyledIconBtn onClick={handleClickUserIcon}>
