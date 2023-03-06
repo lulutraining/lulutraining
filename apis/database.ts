@@ -29,8 +29,8 @@ export const db = {
   read: (collectionName: string): Promise<QuerySnapshot<DocumentData>> => {
     return getDocs(collection(firestore, collectionName));
   },
-  readDoc: async (data: DocumentOption): Promise<DocumentData | undefined> => {
-    return (await getDoc(doc(firestore, data.collectionName, data.documentName))).data();
+  readDoc: async (data: DocumentOption): Promise<DocumentData> => {
+    return await getDoc(doc(firestore, data.collectionName, data.documentName));
   },
   bodyWrite: (data: BodyWriteDocument): Promise<void> => {
     return setDoc(
