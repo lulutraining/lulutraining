@@ -4,3 +4,4 @@ export * from './Icons';
 export * from './Errors';
 export * from './Loader';
 export * from './ActivecheckResult';
+export * from './Thumb';
