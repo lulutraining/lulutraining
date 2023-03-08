@@ -43,7 +43,7 @@ export const unAuthorizedCheck = async (data: VerifyUserType) => {
 
   return {
     props: {
-      propsOption: data.propsOption || {},
+      ...data.propsOption,
     },
   };
 };
