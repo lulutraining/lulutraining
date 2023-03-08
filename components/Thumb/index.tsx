@@ -1,4 +1,4 @@
-import { ResponseCours } from 'types/training';
+import { ResponseCourse } from 'types/training';
 import { Container } from './style';
 import Image from 'next/image';
 import { Checkbox } from '@mui/material';
@@ -11,7 +11,7 @@ interface ThumbProps {
   url: string;
   width: number;
   height: number;
-  thumbInfo: ResponseCours;
+  thumbInfo: ResponseCourse;
   level: string;
 }
 

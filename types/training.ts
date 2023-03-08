@@ -1,4 +1,4 @@
-export interface ResponseCours {
+export interface ResponseCourse {
   kcal: string;
   time: string;
   title: string;
