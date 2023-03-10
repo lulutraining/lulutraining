@@ -1,20 +1,20 @@
 import { Header, Thumb } from 'components';
 import { db } from 'apis/database';
-import { CourseLevel, ResponseCours } from 'types/training';
+import { CourseLevel, ResponseCourse } from 'types/training';
 import { DEFAULT_LEVEL } from 'consts';
 import { Container, StyledTab } from 'styles/home.style';
 import { Tabs } from '@mui/material';
 import { useState } from 'react';
 interface HomeStaticProps {
   commonSense: string[];
-  recommendCourse: ResponseCours[];
+  recommendCourse: ResponseCourse[];
   courses: Courses;
 }
 
 interface Courses {
-  basic: ResponseCours[];
-  intermediate: ResponseCours[];
-  advanced: ResponseCours[];
+  basic: ResponseCourse[];
+  intermediate: ResponseCourse[];
+  advanced: ResponseCourse[];
 }
 
 export default function Home(props: HomeStaticProps) {
