@@ -51,7 +51,7 @@ const BodyCheck = () => {
           weight,
         },
       });
-      const data = await db.readDoc({ collectionName: 'users', documentName: uid });
+      const data = (await db.readDoc({ collectionName: 'users', documentName: uid })).data();
       if (data) {
         setUserInfo((prev) => {
           return { ...prev, body: data.body };
