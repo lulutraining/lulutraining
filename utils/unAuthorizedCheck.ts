@@ -23,7 +23,7 @@ export const unAuthorizedCheck = async (data: VerifyUserType) => {
       }
     } catch (error) {
       data.context.res.setHeader('Set-Cookie', [removeCookie('user'), removeCookie('userProfile')]);
-      if (current === '/bodycheck' || current === '/activecheck') {
+      if (current === '/bodycheck' || current === '/activecheck' || current === '/mypage') {
         return {
           redirect: {
             destination: '/signin',
@@ -32,7 +32,7 @@ export const unAuthorizedCheck = async (data: VerifyUserType) => {
       }
     }
   } else {
-    if (current === '/bodycheck' || current === '/activecheck') {
+    if (current === '/bodycheck' || current === '/activecheck' || current === '/mypage') {
       return {
         redirect: {
           destination: '/signin',
