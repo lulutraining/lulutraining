@@ -1,4 +1,5 @@
 import { User } from 'firebase/auth';
+import { ResponseCourse } from './training';
 
 export interface RequestAuth {
   email: string;
@@ -31,4 +32,5 @@ export interface UserInfoType {
   displayName: string;
   active: UserActiveInfoType;
   body: UserBodyInfoType;
+  bookmark: ResponseCourse[];
 }

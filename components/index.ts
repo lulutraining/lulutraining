@@ -6,3 +6,4 @@ export * from './Loader';
 export * from './ActivecheckResult';
 export * from './Thumb';
 export * from './Header';
+export * from './Bookmark';

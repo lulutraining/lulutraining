@@ -23,6 +23,7 @@ export const InitialUserInfo = {
     },
     grade: DEFAULT_LEVEL.basic,
   },
+  bookmark: [],
 };
 
 export const authState = atom<UserInfoType>({
