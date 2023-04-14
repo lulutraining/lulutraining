@@ -1,24 +1,24 @@
-import { Header } from 'components';
+import { Header, Bookmark } from 'components';
 import { authState } from 'store/atoms';
 import { Container } from 'styles/mypage.style';
-import { db } from 'apis/database';
 import { ResponseCourse } from 'types/training';
 import { unAuthorizedCheck } from 'utils/unAuthorizedCheck';
 import Image from 'next/image';
 import { GetServerSidePropsContext } from 'next';
 import { useEffect, useState } from 'react';
 import { Box } from '@mui/system';
-import { Checkbox, Tab } from '@mui/material';
-import { AccessTime, Bookmark, BookmarkBorder, Looks } from '@mui/icons-material';
+import { Tab } from '@mui/material';
+import { AccessTime, Looks } from '@mui/icons-material';
 import { TabList, TabPanel, TabContext } from '@mui/lab';
 import { useRecoilValue } from 'recoil';
 import cookies from 'next-cookies';
+import { useRouter } from 'next/router';
 
 const MyPage = () => {
+  const router = useRouter();
   const userInfo = useRecoilValue(authState);
   const [value, setValue] = useState('badge');
   const [basicMetabolic, setBasicMetabolic] = useState(0);
-  const [courseList, setCourseList] = useState<ResponseCourse[]>([]);
   const handleChangeTab = (_: React.SyntheticEvent, newValue: string) => {
     setValue(newValue);
   };
@@ -32,18 +32,14 @@ const MyPage = () => {
       setBasicMetabolic(66.47 + 13.75 * weight + 5 * height - 6.76 * age);
     }
   };
-  const getCourse = async () => {
-    const data = (
-      await db.readDoc({
-        collectionName: 'course',
-        documentName: 'advanced',
-      })
-    ).data();
-    setCourseList(data.list);
-  }; // 운동저장기능 구현시 수정
+
+  const handleClickBanner = (id: string) => {
+    router.push(`/contents/${id}`);
+    console.log(id);
+  };
+
   useEffect(() => {
     calculateBasicMetabolic();
-    getCourse();
   }, []);
 
   return (
@@ -90,30 +86,32 @@ const MyPage = () => {
           </TabPanel>
           <TabPanel className="mypage__tabPanel-savedList" value="saved-list">
             <ul>
-              {courseList.map((list: ResponseCourse, idx: number) => (
-                <li key={idx}>
-                  <div className="savedList__thumb">
-                    <Image src={list.big_thumb} width={112} height={112} alt={list.title} />
-                    <div className="savedList__thumb-info">
-                      <p>{list.title}</p>
-                      <ul className="thumb__info-box">
-                        <li className="thumb__info-detail thumb__info-time">
-                          <AccessTime />
-                          <span>{list.time}min</span>
-                        </li>
-                        <li className="thumb__info-detail">
-                          <Looks />
-                          <span>{list.level}</span>
-                        </li>
-                        <li className="thumb__info-detail">{list.kcal}kcal</li>
-                      </ul>
+              {userInfo.bookmark &&
+                userInfo.bookmark.map((course: ResponseCourse, idx: number) => (
+                  <li key={idx}>
+                    <div
+                      className="savedList__thumb"
+                      onClick={() => handleClickBanner(course.youtube_id)}
+                    >
+                      <Image src={course.big_thumb} width={112} height={112} alt={course.title} />
+                      <div className="savedList__thumb-info">
+                        <p>{course.title}</p>
+                        <ul className="thumb__info-box">
+                          <li className="thumb__info-detail thumb__info-time">
+                            <AccessTime />
+                            <span>{course.time}min</span>
+                          </li>
+                          <li className="thumb__info-detail">
+                            <Looks />
+                            <span>{course.level}</span>
+                          </li>
+                          <li className="thumb__info-detail">{course.kcal}kcal</li>
+                        </ul>
+                      </div>
                     </div>
-                  </div>
-                  <div className="savedList__thumb-bookmark">
-                    <Checkbox icon={<BookmarkBorder />} checkedIcon={<Bookmark />} defaultChecked />
-                  </div>
-                </li>
-              ))}
+                    <Bookmark course={course} />
+                  </li>
+                ))}
             </ul>
           </TabPanel>
         </TabContext>

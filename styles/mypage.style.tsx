@@ -108,7 +108,7 @@ export const Container = styled.section`
               }
             }
 
-            .savedList__thumb-bookmark {
+            .thumb__bookmark {
               align-self: flex-start;
               svg {
                 color: ${({ theme }) => theme.colors.pink};
