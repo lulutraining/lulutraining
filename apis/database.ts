@@ -1,3 +1,5 @@
+import { UserActiveInfoType, UserBodyInfoType } from 'types/auth';
+import { ResponseCourse } from 'types/training';
 import {
   collection,
   doc,
@@ -8,7 +10,6 @@ import {
   setDoc,
 } from 'firebase/firestore';
 import { firestore } from 'services/firebase';
-import { UserActiveInfoType, UserBodyInfoType } from 'types/auth';
 
 interface DocumentOption {
   collectionName: string;
@@ -21,6 +22,10 @@ interface BodyWriteDocument extends DocumentOption {
 
 interface ActiveWriteDocument extends DocumentOption {
   active: UserActiveInfoType;
+}
+
+interface BookMarkDocument extends DocumentOption {
+  bookmark: ResponseCourse[];
 }
 
 export const db = {
@@ -52,6 +57,15 @@ export const db = {
           answer: data.active.answer,
           grade: data.active.grade,
         },
+      },
+      { merge: true }
+    );
+  },
+  bookmarkWrite: (data: BookMarkDocument): Promise<void> => {
+    return setDoc(
+      doc(firestore, data.collectionName, data.documentName),
+      {
+        bookmark: data.bookmark,
       },
       { merge: true }
     );
