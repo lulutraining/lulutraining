@@ -43,13 +43,7 @@ export default function Home(props: HomeStaticProps) {
             <ul className="recommendation-thumbs">
               {recommendCourse.map((course, i) => (
                 <li key={course.title} className="recommendation-thumb">
-                  <Thumb
-                    url={course.big_thumb}
-                    width={266}
-                    height={261}
-                    thumbInfo={recommendCourse[i]}
-                    level="basic"
-                  />
+                  <Thumb course={course} width={266} height={261} />
                 </li>
               ))}
             </ul>
@@ -72,13 +66,7 @@ export default function Home(props: HomeStaticProps) {
             <ul className="courses-thumbs">
               {courses[currentTab].map((course, i) => (
                 <li key={course.title} className="courses-thumb">
-                  <Thumb
-                    url={course.small_thumb}
-                    width={356}
-                    height={120}
-                    thumbInfo={courses[currentTab][i]}
-                    level={currentTab}
-                  />
+                  <Thumb course={course} width={356} height={120} />
                 </li>
               ))}
             </ul>
