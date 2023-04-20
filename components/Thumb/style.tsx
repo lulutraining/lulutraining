@@ -22,7 +22,7 @@ export const Container = styled.div`
   .thumb__info {
     display: flex;
     align-items: center;
-    padding-left: 20px;
+    padding-left: 10px;
 
     .thumb__info-box {
       display: flex;
