@@ -29,7 +29,6 @@ export default function Home(props: HomeStaticProps) {
   const [userGrade]: string[] = Object.keys(DEFAULT_LEVEL).filter(
     (level) => DEFAULT_LEVEL[level] === userInfo.active.grade
   );
-  console.log(courses[userGrade]);
 
   return (
     <>
