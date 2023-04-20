@@ -82,7 +82,7 @@ export default function Home(props: HomeStaticProps) {
   );
 }
 
-export const getServerSideProps = async () => {
+export const getStaticProps = async () => {
   const dailyCommonSense = await db.read('dailyCommonSense');
   let commonSense: string[] = [];
   const basicCourse = await db.readDoc({
