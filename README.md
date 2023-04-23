@@ -1,3 +1,11 @@
+## 구현 화면
+
+<center>
+
+![ezgif com-video-to-gif](https://user-images.githubusercontent.com/72537762/233308140-2b82844c-7abc-46ff-9875-9cb3790198a2.gif)
+
+</center>
+
 ## Link
 
 [Notion](https://lulutraining.notion.site/22d39bd0360940d3bcddd177cbd3141d)
@@ -6,9 +14,9 @@
 
 ## Team
 
-|               프론트엔드               |               프론트엔드               |               프론트엔드                | 기획 & 디자인 |
-| :------------------------------------: | :------------------------------------: | :-------------------------------------: | :-----------: |
-| [박지윤](https://github.com/jiyun-par) | [안소현](https://github.com/sso-hyeon) | [지희영](https://github.com/isabellaji) |    한인창     |
+|                프론트엔드                |               프론트엔드               |               프론트엔드                | 기획 & 디자인 |
+| :--------------------------------------: | :------------------------------------: | :-------------------------------------: | :-----------: |
+| [박지윤](https://github.com/Jiyun-Parkk) | [안소현](https://github.com/sso-hyeon) | [지희영](https://github.com/isabellaji) |    한인창     |
 
 ## Project Start
 
@@ -56,19 +64,20 @@ npm run dev
 - 운동 콘텐츠 페이지
 - 마이페이지
 
-### 로그인 / 회원가입
+## 3. 구현 기능 및 과정
 
-<img src='https://user-images.githubusercontent.com/72537762/221516151-221e3318-eb87-4c5c-a55e-7a1d790d69e2.png' width=200/>
-<img src='https://user-images.githubusercontent.com/72537762/221516623-8461ca3d-fd74-41da-8914-d290b7e8413e.png' width=200 />
+| 기능                         | 담당   |
+| ---------------------------- | ------ |
+| 로그인                       | 지희영 |
+| 회원가입                     | 박지윤 |
+| 컨텐츠 북마크 기능           | 박지윤 |
+| 활동량 체크 및 운동코스 추천 | 안소현 |
 
-### 개인정보 입력
+| 리팩토링 & 에러       | 해결과정                                                                                       |
+| --------------------- | ---------------------------------------------------------------------------------------------- |
+| 로그인 인증 로직 변경 | [Next.js에서 Firebase auth 적용하기](https://june-dev.vercel.app/blog/next-js/nextjs-firebase) |
+| Next.js hydrate error | [Recoil hydrate error 해결하기](https://june-dev.vercel.app/blog/next-js/nextjs-firebase)      |
 
-<img src='https://user-images.githubusercontent.com/72537762/221516756-028e6574-96df-4f46-b49f-125dc3aea41b.png' width=200 align='center'/>
-
-### 운동 코스 레벨 추천
-
-<img src='https://user-images.githubusercontent.com/72537762/221517858-c62274e8-299b-4b7c-bd5c-bec42f953ca8.png' width=200/>
-
-## 3. 프로젝트 IA
+## 4. 프로젝트 IA
 
 ![lulutraining-IA](https://user-images.githubusercontent.com/72537762/193749936-188a3cd7-67e3-43f3-84f1-c25a9b73e86e.png)
