@@ -1,10 +1,12 @@
 import { Header, Thumb } from 'components';
+import { authState } from 'store/atoms';
 import { db } from 'apis/database';
 import { CourseLevel, ResponseCourse } from 'types/training';
 import { DEFAULT_LEVEL } from 'consts';
 import { Container, StyledTab } from 'styles/home.style';
 import { Tabs } from '@mui/material';
 import { useState } from 'react';
+import { useRecoilValue } from 'recoil';
 interface HomeStaticProps {
   commonSense: string[];
   recommendCourse: ResponseCourse[];
@@ -12,18 +14,21 @@ interface HomeStaticProps {
 }
 
 interface Courses {
-  basic: ResponseCourse[];
-  intermediate: ResponseCourse[];
-  advanced: ResponseCourse[];
+  [key: string]: ResponseCourse[];
 }
 
 export default function Home(props: HomeStaticProps) {
-  const { commonSense, recommendCourse, courses } = props;
+  const userInfo = useRecoilValue(authState);
+  const { commonSense, courses } = props;
   const [currentTab, setCurrentTab] = useState<CourseLevel>('basic');
 
   const handleChangeTab = (event: React.SyntheticEvent, value: CourseLevel) => {
     setCurrentTab(value);
   };
+
+  const [userGrade]: string[] = Object.keys(DEFAULT_LEVEL).filter(
+    (level) => DEFAULT_LEVEL[level] === userInfo.active.grade
+  );
 
   return (
     <>
@@ -41,7 +46,7 @@ export default function Home(props: HomeStaticProps) {
           <h3 className="home__section-title">추천 코스</h3>
           <div className="recommendation-thumb-box">
             <ul className="recommendation-thumbs">
-              {recommendCourse.map((course, i) => (
+              {courses[userGrade].map((course, i) => (
                 <li key={course.title} className="recommendation-thumb">
                   <Thumb course={course} width={266} height={261} />
                 </li>
@@ -80,11 +85,6 @@ export default function Home(props: HomeStaticProps) {
 export const getStaticProps = async () => {
   const dailyCommonSense = await db.read('dailyCommonSense');
   let commonSense: string[] = [];
-  // recommendCourse부분은 활동량 체크 pr 머지되면 하기
-  const recommendCourse = await db.readDoc({
-    collectionName: 'course',
-    documentName: 'basic',
-  });
   const basicCourse = await db.readDoc({
     collectionName: 'course',
     documentName: 'basic',
@@ -107,7 +107,6 @@ export const getStaticProps = async () => {
   return {
     props: {
       commonSense,
-      recommendCourse: recommendCourse.data()['list'],
       courses: {
         basic: basicCourse.data()['list'],
         intermediate: intermediateCourse.data()['list'],

@@ -2,7 +2,8 @@ import styled from '@emotion/styled';
 import { IconButton } from '@mui/material';
 
 export const Container = styled.header`
-  width: 100%;
+  width: calc(100% - 40px);
+  margin: 0 auto;
   display: flex;
   justify-content: space-between;
 
